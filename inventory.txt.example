@@ -1,0 +1,8 @@
+[nas:vars]
+ansible_user=user
+ansible_become=yes
+ansible_become_method=sudo
+ansible_become_pass='password'
+
+[nas]
+127.0.0.1

@@ -1,0 +1,39 @@
+---
+- hosts: all
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 # One day
+
+    # DOKKU INSTALLATION
+    - name: Download the dokku bootstrap script
+      get_url:
+        url: https://dokku.com/install/v0.29.4/bootstrap.sh
+        dest: /tmp/bootstrap.sh
+        mode: 0755
+
+    - name: Install dokku
+      command: /tmp/bootstrap.sh
+      args:
+        creates: /usr/local/bin/dokku
+
+    - name: Add ssh key to dokku
+      command: cat ~/.ssh/authorized_keys | dokku ssh-keys:add admin
+      args:
+        creates: /home/dokku/.ssh/authorized_keys
+
+    - name: Check if postgres plugin is installed
+      command: dokku plugin:list
+      register: dokku_plugin_list
+
+    - name: Install dokku postgres plugin
+      command: dokku plugin:install https://github.com/dokku/dokku-postgres.git
+      when: "'postgres' not in dokku_plugin_list.stdout"
+
+    # - name: Set user's ssh key for deployment
+    #   become: true
+    #   command: cat ~/.ssh/authorized_keys | dokku ssh-keys:add admin
+
