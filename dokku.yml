@@ -33,6 +33,9 @@
       command: dokku plugin:install https://github.com/dokku/dokku-postgres.git
       when: "'postgres' not in dokku_plugin_list.stdout"
 
+    - name: Install dokku redis plugin
+      command: dokku plugin:install https://github.com/dokku/dokku-redis.git redis
+
     # - name: Set user's ssh key for deployment
     #   become: true
     #   command: cat ~/.ssh/authorized_keys | dokku ssh-keys:add admin

@@ -10,3 +10,11 @@
 
       - name: link the db to the app
         shell: dokku postgres:link {{app_name}}_db {{app_name}}
+        ignore_errors: true
+
+      - name: add redis
+        shell: dokku redis:exists {{app_name}}_redis || dokku redis:create {{app_name}}_redis
+
+      - name: link redis to the app
+        shell: dokku redis:link {{app_name}}_redis {{app_name}}
+        ignore_errors: true
