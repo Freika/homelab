@@ -1,0 +1,12 @@
+---
+  - hosts: dokku
+    tasks:
+      - name: create a new app
+        shell: dokku apps:exists {{app_name}} || dokku apps:create {{app_name}}
+        register: app_exists
+
+      - name: create a db
+        shell: dokku postgres:exists {{app_name}}_db || dokku postgres:create {{app_name}}_db
+
+      - name: link the db to the app
+        shell: dokku postgres:link {{app_name}}_db {{app_name}}
