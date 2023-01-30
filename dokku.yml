@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: dokku
   tasks:
     - name: Update and upgrade apt packages
       become: true
@@ -9,6 +9,12 @@
         cache_valid_time: 86400 # One day
 
     # DOKKU INSTALLATION
+    - name: Add 1GB of swap
+      become: true
+      command: fallocate -l 1G /swapfile
+      args:
+        creates: /swapfile
+
     - name: Download the dokku bootstrap script
       get_url:
         url: https://dokku.com/install/v0.29.4/bootstrap.sh
