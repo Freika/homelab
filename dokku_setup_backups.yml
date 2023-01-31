@@ -1,0 +1,21 @@
+---
+  - hosts: dokku
+    tasks:
+      - name: auth postgres-backup on aws s3
+        shell: dokku postgres:backup-auth {{app_name}}_db {{aws_access_key_id}} {{aws_secret_access_key}}
+        ignore_errors: true
+        # unless backups already authed and setup
+
+      - name: schedule daily postgres backups
+        shell: dokku postgres:backup-schedule {{app_name}}_db "0 3 * * *" {{bucket_name}}
+        ignore_errors: true
+
+      - name: show backup crontab for {{app_name}}_db
+        shell: dokku postgres:backup-schedule-cat {{app_name}}_db
+        register: backup_schedule
+
+      - name: show backup crontab for {{app_name}}_db
+        debug:
+          msg: "{{backup_schedule.stdout}}"
+
+

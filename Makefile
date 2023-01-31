@@ -9,3 +9,9 @@ dokku:
 
 dokku_new_app:
 	ansible-playbook -k -K dokku_new_app.yml
+
+dokku_setup_backups:
+	ansible-playbook -k -K dokku_setup_backups.yml
+
+dokku_add_domain:
+	ansible-playbook -k -K dokku_add_domain.yml

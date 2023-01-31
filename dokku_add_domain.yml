@@ -1,0 +1,5 @@
+---
+  - hosts: dokku
+    tasks:
+      - name: add domain app to {{app_name}}
+        shell: dokku domains:add {{app_name}} {{app_domain}}

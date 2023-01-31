@@ -2,7 +2,21 @@
 ansible_user=user
 ansible_become=yes
 ansible_become_method=sudo
-ansible_become_pass='password'
+ansible_become_pass='sudo_password'
 
 [nas]
+127.0.0.1
+
+[dokku:vars]
+ansible_user=root
+ansible_become=yes
+ansible_become_method=sudo
+ansible_become_pass=''
+app_name='appname'
+app_domain='example.com'
+aws_access_key_id='aws_secret_access_key'
+aws_secret_access_key='aws_secret_access_key'
+bucket_name='bucket_name'
+
+[dokku]
 127.0.0.1
