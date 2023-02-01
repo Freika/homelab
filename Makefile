@@ -15,3 +15,6 @@ dokku_setup_backups:
 
 dokku_add_domain:
 	ansible-playbook -k -K dokku_add_domain.yml
+
+dokku_setup_certificates:
+	ansible-playbook -k -K dokku_setup_certificates.yml
