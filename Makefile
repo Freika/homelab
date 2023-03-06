@@ -18,3 +18,6 @@ dokku_add_domain:
 
 dokku_setup_certificates:
 	ansible-playbook -k -K dokku_setup_certificates.yml
+
+octoprint:
+	ansible-playbook -k -K octoprint.yml

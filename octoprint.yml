@@ -1,0 +1,75 @@
+---
+- hosts: nas
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 # One day
+    - name: install octoprint dependencies
+      become: true
+      apt:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - python3-pip
+        - python3-dev
+        - python3-setuptools
+        - python3-venv
+        - git
+        - build-essential
+        - libyaml-dev
+
+    - name: update pip packages
+      become: true
+      command: pip3 install --upgrade pip
+
+    - name: add octo group
+      become: true
+      group:
+        name: octo
+        state: present
+
+    - name: add octoprint user
+      become: true
+      user:
+        name: octoprint
+        shell: /bin/bash
+        state: present
+
+    - name: add octoprint user to groups
+      become: true
+      user:
+        name: octoprint
+        groups: tty,dialout,octo
+        append: yes
+
+    - name: create octoprint home directory
+      become: true
+      file:
+        path: /home/octoprint
+        state: directory
+        owner: octoprint
+        group: octoprint
+
+    - name: create octoprint virtual environment
+      become: true
+      command: python3 -m venv /home/octoprint/venv creates=/home/octoprint/venv
+
+    # - name: source octoprint virtual environment
+    #   become: true
+    #   shell: source /home/octoprint/venv/bin/activate
+
+    - name: install octoprint
+      become: true
+      command: wget https://github.com/elliotjohnson-hall/All3DP-OctoPrint-Ubuntu/blob/main/octoprint.service
+
+    - name: mv octoprint.service
+      become: true
+      command: sudo mv octoprint.service /etc/systemd/system/octoprint.service && sudo systemctl enable octoprint.service
+
+    - name: activate octoprint service
+      become: true
+      command: /home/octoprint/venv/bin/octoprint serve
+

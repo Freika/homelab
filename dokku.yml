@@ -31,7 +31,7 @@
       args:
         creates: /home/dokku/.ssh/authorized_keys
 
-    - name: Check if postgres plugin is installed
+    - name: Get list of dokku plugins
       command: dokku plugin:list
       register: dokku_plugin_list
 
@@ -41,6 +41,7 @@
 
     - name: Install dokku redis plugin
       command: dokku plugin:install https://github.com/dokku/dokku-redis.git redis
+      when: "'redis' not in dokku_plugin_list.stdout"
 
     - name: Set user's ssh key for deployment
       become: true

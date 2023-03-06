@@ -3,11 +3,6 @@
   vars:
     docker_compose_version: "2.12.2"
   tasks:
-    - name: "Configure hostname"
-      ansible.builtin.hostname:
-        name: "docker-edge"
-      become: true
-
     - name: Update and upgrade apt packages
       become: true
       apt:
