@@ -1,0 +1,46 @@
+# This script is responsible for Immich installation
+
+---
+- hosts: immich
+  vars:
+    docker_compose_version: "2.12.2"
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 # One day
+
+    - name: Create directory for Immich
+      file:
+        path: "{{ local_immich_path }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Download Immich docker-compose.yml
+      get_url:
+        url: "https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml"
+        dest: "{{ local_immich_path }}/docker-compose.yml"
+        mode: 0644
+
+    - name: Download Immich .env file
+      get_url:
+        url: "https://github.com/immich-app/immich/releases/latest/download/example.env"
+        dest: "{{ local_immich_path }}/.env"
+        mode: 0644
+
+    - name: Replace UPLOAD_LOCATION in .env file
+      lineinfile:
+        path: "{{ local_immich_path }}/.env"
+        regexp: '^UPLOAD_LOCATION=.*$'
+        line: "UPLOAD_LOCATION={{ local_immich_path }}/app"
+
+    - pip: name=docker-compose
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: "{{ local_immich_path }}"
+      register: output

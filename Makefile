@@ -27,3 +27,6 @@ samba:
 
 backup:
 	ansible-playbook -k -K backup.yml
+
+immich:
+	ansible-playbook -k -K immich.yml

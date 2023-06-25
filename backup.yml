@@ -1,7 +1,7 @@
 # This script is responsible for backing up the data on the NAS to Backblaze B2.
 
 ---
-- hosts: digitalocean-test
+- hosts: immich
   vars:
     docker_compose_version: "2.12.2"
   tasks:
@@ -32,9 +32,17 @@
     - name: Test sync directory with B2
       command: rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }}
 
-    - name: Schedule photos backup to be done every minute
+    - name: Schedule photos backup to be done twice a day
       cron:
         name: "Backup photos to B2"
         minute: "0"
         hour: "6,18"
         job: rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }}
+
+    - name: Schedule Immich DB backup to be done twice a day
+      cron:
+        name: "Backup photos to B2"
+        minute: "55"
+        hour: "5,17"
+        job: docker exec -t immich_postgres pg_dumpall -c -U postgres | gzip > "{{ local_backup_path }}/db_dump.sql.gz"
+

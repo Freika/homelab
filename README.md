@@ -37,3 +37,4 @@ To add certificates to the app, you need to follow some steps before running the
 ### Todo:
 
 - https://ubuntu.com/tutorials/install-and-configure-samba#2-installing-samba
+- io.portainer.accesscontrol.public for Immich so we could manage it using Portainer
