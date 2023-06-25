@@ -1,0 +1,40 @@
+# This script is responsible for backing up the data on the NAS to Backblaze B2.
+
+---
+- hosts: digitalocean-test
+  vars:
+    docker_compose_version: "2.12.2"
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 # One day
+
+    - name: Install rclone
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+          - rclone
+
+    - name: Upload rclone B2 config
+      template:
+        src: "tmp/rclone.conf"
+        dest: ".config/rclone/rclone.conf"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Test sync directory with B2
+      command: rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }}
+
+    - name: Schedule photos backup to be done every minute
+      cron:
+        name: "Backup photos to B2"
+        minute: "0"
+        hour: "6,18"
+        job: rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }}

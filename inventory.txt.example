@@ -20,3 +20,18 @@ bucket_name='bucket_name'
 
 [dokku]
 127.0.0.1
+
+[immich]
+127.0.0.1
+
+[immich:vars]
+ansible_user=root
+ansible_become=yes
+ansible_become_method=sudo
+ansible_become_pass=''
+backblaze_app_key_id=123
+backblaze_app_key=123
+backblaze_hard_delete=true
+backblaze_bucket_name=backblaze-bucket-name
+backblaze_remote_name=backblaze-remote-name
+local_backup_path=backup-test

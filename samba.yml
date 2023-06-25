@@ -1,0 +1,31 @@
+---
+- name: Install Samba on Ubuntu Server
+  hosts: nas
+  become: true
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Samba
+      apt:
+        name: samba
+        state: present
+
+    - name: Upload smb.conf.j2
+      copy:
+        src: smb.conf.j2
+        dest: /smb.conf.j2
+
+    - name: Configure Samba
+      template:
+        src: /smb.conf.j2
+        dest: /etc/samba/smb.conf
+      notify: restart samba
+
+  handlers:
+    - name: restart samba
+      service:
+        name: smbd
+        state: restarted

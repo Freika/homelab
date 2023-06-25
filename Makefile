@@ -16,8 +16,14 @@ dokku_setup_backups:
 dokku_add_domain:
 	ansible-playbook -k -K dokku_add_domain.yml
 
-dokku_setup_certificates:
-	ansible-playbook -k -K dokku_setup_certificates.yml
+dokku_add_ssl:
+	ansible-playbook -k -K dokku_add_ssl.yml
 
 octoprint:
 	ansible-playbook -k -K octoprint.yml
+
+samba:
+	ansible-playbook -k -K samba.yml
+
+backup:
+	ansible-playbook -k -K backup.yml
