@@ -8,7 +8,7 @@ ansible_become_pass='sudo_password'
 127.0.0.1
 
 [dokku:vars]
-ansible_user=root
+ansible_user=user
 ansible_become=yes
 ansible_become_method=sudo
 ansible_become_pass=''
@@ -25,7 +25,7 @@ bucket_name='bucket_name'
 127.0.0.1
 
 [immich:vars]
-ansible_user=root
+ansible_user=user
 ansible_become=yes
 ansible_become_method=sudo
 ansible_become_pass=''
