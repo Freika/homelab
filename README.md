@@ -1,6 +1,6 @@
 # Homelab
 
-This is a collection of scripts and configuration files that I use to manage my homelab. Some of them might also be used for my personal projects to setup staging and production servers.
+This is a collection of scripts and configuration files that I use to manage my homelab. Some of them might also be used for my personal projects to setup staging and production servers. All variables should be placed in `inventory.txt` file.
 
 # Disclaimer
 
@@ -23,7 +23,7 @@ Some of the scripts might be unsafe. I'm aware one is not supposed to operate as
 - `make dokku_add_domain` will add a domain to the app.
 - `make dokku_add_ssl` will add SSL to the app.
 
-#### Adding certificates
+#### Adding certificates for dokku deployed apps
 
 To add certificates to the app, you need to follow some steps before running the `make dokku_add_ssl` command.
 
