@@ -44,3 +44,42 @@
       community.docker.docker_compose:
         project_src: "{{ local_immich_path }}"
       register: output
+
+    - name: Install Immich import tool
+      npm:
+        name: immich
+        global: yes
+        state: present
+
+    - name: Install rclone
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+          - rclone
+
+    - name: Upload rclone B2 config
+      template:
+        src: "tmp/rclone.conf"
+        dest: ".config/rclone/rclone.conf"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Schedule Immich DB backup to be done twice a day
+      cron:
+        name: "Dump Immich DB to a local file"
+        minute: "55"
+        hour: "5,17"
+        job: docker exec -t immich_postgres pg_dumpall -c -U postgres | gzip > "{{ local_backup_path }}/db_dump.sql.gz"
+        state: present
+
+    - name: Schedule photos backup to be done twice a day
+      cron:
+        name: "Backup immich files to B2"
+        minute: "0"
+        hour: "6,18"
+        job: rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }}
+        state: present
