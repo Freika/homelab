@@ -71,15 +71,17 @@
     - name: Schedule Immich DB backup to be done twice a day
       cron:
         name: "Dump Immich DB to a local file"
+        weekday: "6"
         minute: "55"
-        hour: "5,17"
+        hour: "5"
         job: docker exec -t immich_postgres pg_dumpall -c -U postgres | gzip > "{{ local_backup_path }}/db_dump.sql.gz"
         state: present
 
     - name: Schedule photos backup to be done twice a day
       cron:
         name: "Backup immich files to B2"
+        weekday: "6"
         minute: "0"
-        hour: "6,18"
+        hour: "6"
         job: rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }}
         state: present
