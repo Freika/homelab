@@ -45,12 +45,6 @@
         project_src: "{{ local_immich_path }}"
       register: output
 
-    - name: Install Immich import tool
-      npm:
-        name: immich
-        global: yes
-        state: present
-
     - name: Install rclone
       apt:
         name: "{{ packages }}"
