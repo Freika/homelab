@@ -30,3 +30,6 @@ backup:
 
 immich:
 	ansible-playbook -k -K immich.yml
+
+paperless:
+	ansible-playbook -k -K playbooks/paperless-ngx.yml -i inventory.txt
