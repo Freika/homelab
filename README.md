@@ -23,6 +23,13 @@ Some of the scripts might be unsafe. I'm aware one is not supposed to operate as
 - `make dokku_add_domain` will add a domain to the app.
 - `make dokku_add_ssl` will add SSL to the app.
 
+### Production Dokku from strach
+
+```
+ansible-galaxy install -p ./roles  geerlingguy.pip geerlingguy.docker_arm
+ansible-playbook -k -K -v docker-arm.yml
+```
+
 #### Adding certificates for dokku deployed apps
 
 To add certificates to the app, you need to follow some steps before running the `make dokku_add_ssl` command.

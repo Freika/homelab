@@ -17,7 +17,7 @@
 
     - name: Download the dokku bootstrap script
       get_url:
-        url: https://dokku.com/install/v0.30.9/bootstrap.sh
+        url: https://dokku.com/install/v0.30.10/bootstrap.sh
         dest: /tmp/bootstrap.sh
         mode: 0755
 

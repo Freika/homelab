@@ -1,0 +1,69 @@
+# This script is responsible for Immich installation
+
+---
+- hosts: nas
+  vars:
+    docker_compose_version: "2.12.2"
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 # One day
+
+    - name: Create directory for Cloudflare Tunnel
+      file:
+        path: "{{ local_cloudflare_tunnel_path }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload cloudflare tunnel docker-compose.yml
+      template:
+        src: "playbooks/cloudflare-tunnel/docker-compose.yml"
+        dest: "cloudflare-tunnel/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: "{{ local_cloudflare_tunnel_path }}"
+      register: output
+
+    - name: Install rclone
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+          - rclone
+
+    - name: Upload rclone B2 config
+      template:
+        src: "tmp/rclone.conf"
+        dest: ".config/rclone/rclone.conf"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Schedule Immich DB backup to be done daily
+      cron:
+        name: "Dump Immich DB to a local file"
+        minute: "45"
+        hour: "5"
+        job: docker exec -t immich_postgres pg_dumpall -c -U postgres | gzip > "{{ local_backup_path }}/db_dump.sql.gz"
+        state: present
+
+    - name: Schedule photos backup to be done once a month
+      cron:
+        name: "Backup immich files to B2"
+        minute: "55"
+        hour: "17"
+        day: "15"
+        job: /usr/bin/rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }} --config /home/{{ ansible_user }}/.config/rclone/rclone.conf
+        state: present

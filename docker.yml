@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: dokku
   vars:
     docker_compose_version: "2.12.2"
   tasks:
