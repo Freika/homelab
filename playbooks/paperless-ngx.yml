@@ -5,11 +5,7 @@
     backblaze_bucket_name: frey-homelab-backups
     backblaze_remote_name: homelab-backup
   tasks:
-    # - name: Update and upgrade apt packages
-    #   apt:
-    #     upgrade: yes
-    #     update_cache: yes
-    #     cache_valid_time: 86400 # One day
+    - import_tasks: ../tasks/apt-upgrade.yml
 
     # - name: Install rclone
     #   apt:

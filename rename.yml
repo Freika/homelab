@@ -1,7 +1,5 @@
 ---
-- hosts: all
-  vars:
-    docker_compose_version: "2.12.2"
+- hosts: nas
   tasks:
     - name: "Configure hostname"
       ansible.builtin.hostname:

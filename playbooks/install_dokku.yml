@@ -1,23 +1,24 @@
 ---
 - hosts: dokku
+  vars:
+    dokku_version: "0.31.4"
   tasks:
-    - name: Update and upgrade apt packages
-      become: true
-      apt:
-        upgrade: yes
-        update_cache: yes
-        cache_valid_time: 86400 # One day
+    - import_tasks: ../tasks/apt-upgrade.yml
+    - import_tasks: ../tasks/rename_host.yml
+      vars:
+        hostname: dokku-hetzner
 
     # DOKKU INSTALLATION
-    - name: Add 1GB of swap
+    ## TODO: Add crontask setup for docker system prune -a
+    - name: Add 3GB of swap
       become: true
-      command: fallocate -l 1G /swapfile
+      command: fallocate -l 3G /swapfile
       args:
         creates: /swapfile
 
     - name: Download the dokku bootstrap script
       get_url:
-        url: https://dokku.com/install/v0.30.10/bootstrap.sh
+        url: https://dokku.com/install/v{{ dokku_version }}/bootstrap.sh
         dest: /tmp/bootstrap.sh
         mode: 0755
 

@@ -1,23 +1,23 @@
-portainer:
-	ansible-playbook -k -K portainer.yml
+install_portainer:
+	ansible-playbook -k -K playbooks/install_portainer.yml
 
-docker:
-	ansible-playbook -k -K docker.yml
+install_docker:
+	ansible-playbook -k -K playbooks/install_docker.yml
 
-dokku:
-	ansible-playbook -k -K dokku.yml
+install_dokku:
+	ansible-playbook -k -K playbooks/install_dokku.yml
 
-dokku_new_app:
-	ansible-playbook -k -K dokku_new_app.yml
+create_dokku_app:
+	ansible-playbook -k -K playbooks/create_dokku_app.yml
 
-dokku_setup_backups:
-	ansible-playbook -k -K dokku_setup_backups.yml
+setup_dokku_backups:
+	ansible-playbook -k -K playbooks/setup_dokku_backups.yml
 
-dokku_add_domain:
-	ansible-playbook -k -K dokku_add_domain.yml
+add_dokku_domain:
+	ansible-playbook -k -K playbooks/add_dokku_domain.yml
 
-dokku_add_ssl:
-	ansible-playbook -k -K dokku_setup_certificates.yml
+add_dokku_ssl:
+	ansible-playbook -k -K playbooks/dokku_setup_certificates.yml
 
 octoprint:
 	ansible-playbook -k -K octoprint.yml

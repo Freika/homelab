@@ -1,9 +1,0 @@
----
-- hosts: dokku
-
-  vars:
-    pip_package: python3-pip
-
-  roles:
-    - geerlingguy.pip
-    - geerlingguy.docker_arm

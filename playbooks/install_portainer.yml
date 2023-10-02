@@ -1,0 +1,36 @@
+---
+- hosts: thinky01
+  vars:
+    docker_compose_version: "2.12.2"
+
+  tasks:
+    - import_tasks: ../tasks/rename_host.yml
+      vars:
+        hostname: thinky01
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Ensure docker deamon is running
+      service:
+        name: docker
+        state: started
+      become: true
+
+    # https://docs.ansible.com/ansible/latest/collections/community/docker/docker_container_module.html#ansible-collections-community-docker-docker-container-module
+    - name: Create portainer container
+      docker_container:
+        name: portainer
+        image: portainer/portainer-ce
+        state: started
+        recreate: yes
+        restart_policy: always
+        published_ports:
+          - "8000:8000"
+          - "9000:9000"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - portainer_data:/data
+
+    # FIREWALL SETUP
+    - name: Disable UFW
+      ufw:
+        state: disabled
