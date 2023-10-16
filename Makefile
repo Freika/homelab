@@ -28,8 +28,14 @@ samba:
 backup:
 	ansible-playbook -k -K backup.yml
 
-immich:
-	ansible-playbook -k -K immich.yml
+install_immich:
+	ansible-playbook -k -K playbooks/install_immich.yml -i inventory.txt
 
-paperless:
+install_paperless:
 	ansible-playbook -k -K playbooks/paperless-ngx.yml -i inventory.txt
+
+install_go:
+	ansible-playbook -k -K playbooks/install_go.yml
+
+install_runitor:
+	ansible-playbook -k -K playbooks/install_runitor.yml

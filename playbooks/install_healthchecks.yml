@@ -1,0 +1,16 @@
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Upload healthchecks docker-compose.yml
+      copy:
+        src: .healthchecks/docker-compose.yml
+        dest: /home/frey/apps/healthchecks/docker-compose.yml
+        owner: frey
+        group: frey
+        mode: 0644
+
+    # ... Setup super user, etc.
+
+    # - name: Install runitor

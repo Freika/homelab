@@ -1,0 +1,49 @@
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Remove existing go installation
+      shell: rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.3.linux-amd64.tar.gz
+      ignore_errors: true
+
+    - name: Download go archive
+      get_url:
+        url: https://golang.org/dl/go1.21.3.linux-amd64.tar.gz
+        dest: /home/frey/apps/go1.21.3.linux-amd64.tar.gz
+        mode: 0644
+        owner: frey
+        group: frey
+
+    - name: Extract go archive
+      shell: tar -C /usr/local -xzf /home/frey/apps/go1.21.3.linux-amd64.tar.gz
+      args:
+        creates: /usr/local/go
+
+    - name: Set go environment variables
+      lineinfile:
+        path: /home/frey/.bashrc
+        line: |
+          export PATH=$PATH:/usr/local/go/bin
+          export GOPATH=/home/frey/go
+          export PATH=$PATH:$GOPATH/bin
+        state: present
+        create: yes
+        owner: frey
+        group: frey
+        mode: 0644
+
+    - name: Check go version
+      shell: /home/frey/.bashrc && go version
+      args:
+        executable: /bin/bash
+      register: go_version
+
+    - name: Echo go version
+      debug:
+        msg: "{{ go_version.stdout }}"
+
+    - name: Remove go archive
+      file:
+        path: /home/frey/apps/go1.21.3.linux-amd64.tar.gz
+        state: absent

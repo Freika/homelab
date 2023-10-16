@@ -1,16 +1,9 @@
-# This script is responsible for Immich installation
+# This script is responsible for Cloudflare tunnel installation
 
 ---
-- hosts: nas
-  vars:
-    docker_compose_version: "2.12.2"
+- hosts: thinky01
   tasks:
-    - name: Update and upgrade apt packages
-      become: true
-      apt:
-        upgrade: yes
-        update_cache: yes
-        cache_valid_time: 86400 # One day
+    - import_tasks: ../tasks/apt-upgrade.yml
 
     - name: Create directory for Cloudflare Tunnel
       file:

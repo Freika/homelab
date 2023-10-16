@@ -1,14 +1,14 @@
-[nas:vars]
-ansible_user=user
-ansible_become=yes
-ansible_become_method=sudo
-ansible_become_pass='sudo_password'
-
 [nas]
 127.0.0.1
 
+[nas:vars]
+ansible_user=root
+ansible_become=yes
+ansible_become_method=sudo
+ansible_become_pass=''
+
 [dokku:vars]
-ansible_user=user
+ansible_user=root
 ansible_become=yes
 ansible_become_method=sudo
 ansible_become_pass=''
@@ -19,13 +19,13 @@ aws_secret_access_key='aws_secret_access_key'
 bucket_name='bucket_name'
 
 [dokku]
-127.0.0.1
+192/168.0.1
 
 [immich]
 127.0.0.1
 
 [immich:vars]
-ansible_user=user
+ansible_user=root
 ansible_become=yes
 ansible_become_method=sudo
 ansible_become_pass=''
@@ -36,3 +36,19 @@ backblaze_bucket_name=backblaze-bucket-name
 backblaze_remote_name=backblaze-remote-name
 local_backup_path=/media/hdd/immich
 local_immich_path=/media/hdd/immich
+healthchecks_ping_url='http://192/168.0.1:8020/ping/'
+hc_paperless_backup_uuid=''
+hc_paperless_backup_uploaded_uuid=''
+hc_immich_backup_uuid=''
+hc_immich_backup_uploaded_uuid=''
+
+[thinky01]
+192/168.0.1
+
+[thinky01:vars]
+ansible_user=root
+ansible_become=yes
+ansible_become_method=sudo
+ansible_become_pass=''
+backblaze_bucket_name: backblaze_bucket_name
+backblaze_remote_name: backblaze_bucket_name

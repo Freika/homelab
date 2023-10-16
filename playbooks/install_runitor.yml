@@ -1,0 +1,7 @@
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Install runitor
+      shell: go install bdd.fi/x/runitor/cmd/runitor@latest
