@@ -39,3 +39,6 @@ install_go:
 
 install_runitor:
 	ansible-playbook -k -K playbooks/install_runitor.yml
+
+install_actual:
+	ansible-playbook -k -K playbooks/install_actual.yml -i inventory.txt

@@ -21,7 +21,6 @@
         group: "{{ ansible_user }}"
         mode: 0600
 
-
     - name: Create and start services
       community.docker.docker_compose:
         project_src: "{{ local_cloudflare_tunnel_path }}"

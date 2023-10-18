@@ -1,0 +1,27 @@
+# This script is responsible for Immich installation
+
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for Actual
+      file:
+        path: "{{ local_actual_path }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload Actual docker-compose.yml
+      template:
+        src: "actual/docker-compose.yml"
+        dest: "{{ local_actual_path }}/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: "{{ local_actual_path }}"
+      register: output

@@ -60,7 +60,7 @@
         name: "Dump Immich DB to a local file"
         minute: "45"
         hour: "5"
-        job: docker exec -t immich_postgres pg_dumpall -c -U postgres | gzip > "{{ local_backup_path }}/db_dump.sql.gz" curl -X GET {{ healthchecks_ping_url }}{{ hc_immich_backup_uuid }}
+        job: docker exec -t immich_postgres pg_dumpall -c -U postgres | gzip > "{{ local_backup_path }}/db_dump.sql.gz" && curl -X GET {{ healthchecks_ping_url }}{{ hc_immich_backup_uuid }}
         state: present
 
     - name: Schedule photos backup to be done once a month
