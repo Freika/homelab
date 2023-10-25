@@ -1,0 +1,27 @@
+---
+# -- (Optional) When using Traefik, use this section
+networks:
+  frontend:
+    external: true
+services:
+  whoami:
+    image: containous/whoami
+    container_name: whoami
+    depends_on:
+      - traefik
+    # -- (Optional) Traefik example configuration
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.http.services.whoami.loadbalancer.server.scheme=https"
+      - "traefik.http.routers.whoami-http.entrypoints=web"
+      - "traefik.http.routers.whoami-http.rule=HostRegexp(`your-server-url`, `{subhost:[a-z]+}.your-server-url`)"
+      - "traefik.http.routers.whoami-https.entrypoints=websecure"
+      - "traefik.http.routers.whoami-https.rule=HostRegexp(`your-server-url`, `{subhost:[a-z]+}.your-server-url`)"
+      - "traefik.http.routers.whoami-https.tls=true"
+      - "traefik.http.routers.whoami-https.tls.certresolver=production"
+      - "traefik.http.routers.whoami-https.tls.domains[0].main=your-server-url"
+      - "traefik.http.routers.whoami-https.tls.domains[0].sans=*.your-server-url"
+    networks:
+      - frontend
+    restart: unless-stopped

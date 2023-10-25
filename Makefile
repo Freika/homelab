@@ -42,3 +42,6 @@ install_runitor:
 
 install_actual:
 	ansible-playbook -k -K playbooks/install_actual.yml -i inventory.txt
+
+install_traefik:
+	ansible-playbook -k -K playbooks/install_traefik.yml -i inventory.txt

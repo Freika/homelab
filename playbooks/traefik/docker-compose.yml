@@ -1,0 +1,28 @@
+version: "3.7"
+
+networks:
+  frontend:
+    external: true
+
+services:
+  traefik:
+    image: traefik:3.0
+    container_name: traefik
+    restart: always
+    command:
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --api.insecure
+      - --api.dashboard
+    environment:
+      - CF_DNS_API_TOKEN={{ cloudflare_api_token }}
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - ./config:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - frontend

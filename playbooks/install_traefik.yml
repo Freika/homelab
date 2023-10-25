@@ -1,0 +1,45 @@
+# This script is responsible for Immich installation
+
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for Traefik
+      file:
+        path: "{{ local_traefik_path }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Create directory for traefik certs
+      file:
+        path: "{{ local_traefik_path }}/config/certs"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload traefik docker-compose
+      template:
+        src: "traefik/docker-compose.yml"
+        dest: "{{ local_traefik_path }}/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Upload traefik config
+      template:
+        src: "traefik/traefik.yaml"
+        dest: "{{ local_traefik_path }}/config/traefik.yaml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: "{{ local_traefik_path }}"
+      register: output
+
+
