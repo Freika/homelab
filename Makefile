@@ -45,3 +45,6 @@ install_actual:
 
 install_traefik:
 	ansible-playbook -k -K playbooks/install_traefik.yml -i inventory.txt
+
+install_jellyfin:
+	ansible-playbook -k -K playbooks/install_jellyfin.yml -i inventory.txt
