@@ -1,4 +1,7 @@
 version: '3'
+networks:
+  frontend:
+    external: true
 services:
   actual_server:
     image: actualbudget/actual-server:latest
@@ -20,3 +23,5 @@ services:
       # '/data' is the path Actual will look for its files in by default, so leave that as-is.
       - ./actual-data:/data
     restart: unless-stopped
+    networks:
+      - frontend

@@ -1,0 +1,19 @@
+$TTL 2d
+
+$ORIGIN chibi.rodeo.
+
+@             IN    SOA       ns.chibi.rodeo. hey.frey.today. (
+                              20231030  ; serial
+                              12h       ; refresh
+                              15m       ; retry
+                              3w        ; expiry
+                              2h        ; minimum TTL
+                              )
+              IN    NS        ns.chibi.rodeo.
+
+ns            IN    A         192.168.0.227
+
+; Add your own records below this line
+
+thinky01      IN    A         192.168.0.227
+nas           IN    A         192.168.0.20

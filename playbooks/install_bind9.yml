@@ -1,0 +1,49 @@
+# This script is responsible for Bind9 installation
+
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: create directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0777
+      loop:
+        - /home/{{ ansible_user }}/apps/bind9/bind/
+        - /home/{{ ansible_user }}/apps/bind9/cache/bind
+        - /home/{{ ansible_user }}/apps/bind9/lib/bind
+        - /home/{{ ansible_user }}/apps/bind9
+
+    - name: Upload docker-compose
+      template:
+        src: bind9/docker-compose.yml
+        dest: /home/{{ ansible_user }}/apps/bind9/docker-compose.yml
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0644
+
+    - name: Upload conf file
+      copy:
+        src: bind9/named.conf
+        dest: /home/{{ ansible_user }}/apps/bind9/bind/named.conf
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0644
+
+    - name: Upload zone file
+      copy:
+        src: bind9/{{ homelab_domain }}.zone
+        dest: /home/{{ ansible_user }}/apps/bind9/bind/{{ homelab_domain }}.zone
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0644
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: /home/{{ ansible_user }}/apps/bind9
+      register: output
+

@@ -1,0 +1,13 @@
+version: '2.2'
+services:
+  nginxproxymanager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginxproxymanager
+    restart: unless-stopped
+    ports:
+      # - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - /home/frey/apps/nginx/data:/data
+      - /home/frey/apps/nginx/letsencrypt:/etc/letsencrypt

@@ -48,3 +48,12 @@ install_traefik:
 
 install_jellyfin:
 	ansible-playbook -k -K playbooks/install_jellyfin.yml -i inventory.txt
+
+install_bind9:
+	ansible-playbook -k -K playbooks/install_bind9.yml -i inventory.txt
+
+install_home_assistant:
+	ansible-playbook -k -K playbooks/install_home_assistant.yml -i inventory.txt
+
+install_nginx:
+	ansible-playbook -k -K playbooks/install_nginx.yml -i inventory.txt

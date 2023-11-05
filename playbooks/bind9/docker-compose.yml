@@ -1,0 +1,13 @@
+---
+services:
+  bind9:
+    image: ubuntu/bind9:latest
+    container_name: bind9
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - /home/frey/apps/bind9/bind:/etc/bind/
+      - /home/frey/apps/bind9/cache/bind:/var/cache/bind
+      - /home/frey/apps/bind9/lib/bind:/var/lib/bind
+    restart: unless-stopped

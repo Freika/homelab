@@ -1,0 +1,22 @@
+sparklines:
+  - title: Thinky CPU usage
+    rate-ms: 1000
+    scale: 0
+    sample: ps -A -o %cpu | awk '{s+=$1} END {print s}'
+  - title: Thinky free memory pages
+    rate-ms: 1000
+    scale: 0
+    sample: memory_pressure | grep 'Pages free' | awk '{print $3}'
+  - title: NAS CPU usage
+    rate-ms: 1000
+    scale: 0
+    sample: ssh frey@192.168.0.20 ps -A -o %cpu | awk '{s+=$1} END {print s}'
+  - title: NAS free memory pages
+    rate-ms: 1000
+    scale: 0
+    sample: ssh frey@192.168.0.20 memory_pressure | grep 'Pages free' | awk '{print $3}'
+
+textboxes:
+  - title: Docker containers stats
+    rate-ms: 500
+    sample: docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.PIDs}}"

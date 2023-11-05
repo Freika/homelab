@@ -1,0 +1,30 @@
+# This script is responsible for HomeAssistant installation
+
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: create directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0777
+      loop:
+        - /home/{{ ansible_user }}/apps/home_assistant
+        - /home/{{ ansible_user }}/apps/home_assistant/config
+
+    - name: Upload docker-compose
+      template:
+        src: home_assistant/docker-compose.yml
+        dest: /home/{{ ansible_user }}/apps/home_assistant/docker-compose.yml
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0644
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: /home/{{ ansible_user }}/apps/home_assistant
+      register: output

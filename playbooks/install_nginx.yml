@@ -1,0 +1,33 @@
+# This script is responsible for nginx installation
+
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Сreate directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0777
+      loop:
+        - "{{ local_nginx_path }}"
+        - "{{ local_nginx_path }}/data/"
+        - "{{ local_nginx_path }}/letsencrypt"
+
+    - name: Upload nginx docker-compose
+      template:
+        src: "nginx/docker-compose.yml"
+        dest: "{{ local_nginx_path }}/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: "{{ local_nginx_path }}"
+      register: output
+
+
