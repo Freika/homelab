@@ -17,8 +17,8 @@
           group: root
           mode: 0644
         with_items:
-          - "tmp/{{app_domain}}.crt"
-          - "tmp/{{app_domain}}.key"
+          - "../tmp/{{app_domain}}.crt"
+          - "../tmp/{{app_domain}}.key"
 
       - name: tar certificate file
         command: tar -cvf /root/certs/{{app_domain}}.tar /root/certs/{{app_domain}}.crt /root/certs/{{app_domain}}.key

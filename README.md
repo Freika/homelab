@@ -18,10 +18,10 @@ Some of the scripts might be unsafe. I'm aware one is not supposed to operate as
 ### Dokku
 
 - `make dokku` will install Dokku on the server. It will also add 1GB swap file.
-- `make dokku_new_app` will create a new Dokku app on the server. It will also create a postgres database for the app, redis and link them to the app.
-- `make dokku_setup_backups` will set up backups for the app. It will create a cron job that will run every day at 3am and will create a backup of the database. The backups will be uploaded to AWS S3.
-- `make dokku_add_domain` will add a domain to the app.
-- `make dokku_add_ssl` will add SSL to the app.
+- `make create_dokku_app` will create a new Dokku app on the server. It will also create a postgres database for the app, redis and link them to the app.
+- `make setup_dokku_backups` will set up backups for the app. It will create a cron job that will run every day at 3am and will create a backup of the database. The backups will be uploaded to AWS S3.
+- `make add_dokku_domain` will add a domain to the app.
+- `make add_dokku_ssl` will add SSL to the app.
 
 ### Production Dokku from strach
 

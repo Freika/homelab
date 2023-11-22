@@ -69,5 +69,5 @@
         minute: "55"
         hour: "3"
         day: "15"
-        job: /usr/bin/rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }} --config /home/{{ ansible_user }}/.config/rclone/rclone.conf && curl -X GET {{ healthchecks_ping_url }}{{ hc_immich_backup_uploaded_uuid }}
+        job: /usr/bin/rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }} --config /home/{{ ansible_user }}/.config/rclone/rclone.conf --include='/app/library/**' --include='/app/upload/**' --include='/app/profile/**' && curl -X GET {{ healthchecks_ping_url }}{{ hc_immich_backup_uploaded_uuid }}
         state: present

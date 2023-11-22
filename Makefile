@@ -57,3 +57,6 @@ install_home_assistant:
 
 install_nginx:
 	ansible-playbook -k -K playbooks/install_nginx.yml -i inventory.txt
+
+install_nextcloud:
+	ansible-playbook -k -K playbooks/install_nextcloud.yml -i inventory.txt
