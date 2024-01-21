@@ -1,0 +1,33 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb:latest
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - /home/svl/influxdb2:/var/lib/influxdb2:rw
+    ports:
+      - "8086:8086"
+  # Use the influx cli to set up an influxdb instance.
+  influxdb_cli:
+    links:
+      - influxdb
+    image: influxdb:latest
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - /home/svl/influxdb2:/var/lib/influxdb2:rw
+      - ./ssl/influxdb-selfsigned.crt:/etc/ssl/influxdb-selfsigned.crt:rw
+      - ./ssl/influxdb-selfsigned.key:/etc/ssl/influxdb-selfsigned.key:rw
+    environment:
+       # Use these same configurations parameters in your telegraf configuration, mytelegraf.conf.
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=myusername
+      - DOCKER_INFLUXDB_INIT_PASSWORD=passwordpasswordpassword
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3333:3000

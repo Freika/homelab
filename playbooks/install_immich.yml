@@ -1,7 +1,7 @@
 # This script is responsible for Immich installation
 
 ---
-- hosts: immich
+- hosts: homelab-prod
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 
@@ -13,15 +13,15 @@
         group: "{{ ansible_user }}"
         mode: 0755
 
-    - name: Download Immich docker-compose.yml
-      get_url:
-        url: "https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml"
+    - name: Upload Immich docker-compose.yml
+      copy:
+        src: ./immich/docker-compose.yml
         dest: "{{ local_immich_path }}/docker-compose.yml"
         mode: 0644
 
-    - name: Download Immich .env file
-      get_url:
-        url: "https://github.com/immich-app/immich/releases/latest/download/example.env"
+    - name: Upload Immich .env
+      copy:
+        src: ./immich/example.env
         dest: "{{ local_immich_path }}/.env"
         mode: 0644
 
@@ -34,9 +34,7 @@
     - pip: name=docker-compose
 
     - name: Create and start services
-      community.docker.docker_compose:
-        project_src: "{{ local_immich_path }}"
-      register: output
+      command: docker compose -f {{ local_immich_path }}/docker-compose.yml up -d
 
     - name: Install rclone
       apt:
@@ -49,11 +47,23 @@
 
     - name: Upload rclone B2 config
       template:
-        src: "tmp/rclone.conf"
-        dest: ".config/rclone/rclone.conf"
+        src: "./immich/rclone.conf"
+        dest: "/home/{{ ansible_user }}/.config/rclone/rclone.conf"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
         mode: 0600
+
+    - name: Replace account in rclone.conf
+      lineinfile:
+        path: "/home/{{ ansible_user }}/.config/rclone/rclone.conf"
+        regexp: '^account = .*$'
+        line: "account = {{ backblaze_app_key_id }}"
+
+    - name: Replace key in rclone.conf
+      lineinfile:
+        path: "/home/{{ ansible_user }}/.config/rclone/rclone.conf"
+        regexp: '^key = .*$'
+        line: "key = {{ backblaze_app_key }}"
 
     - name: Schedule Immich DB backup to be done daily
       cron:

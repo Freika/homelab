@@ -1,13 +1,13 @@
 # https://hub.docker.com/r/linuxserver/jellyfin
 
 ---
-- hosts: nas
+- hosts: homelab-prod
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 
     - name: Create directory for Jellyfin
       file:
-        path: "{{ local_jellyfin_path }}"
+        path: "{{ local_apps_path }}/jellyfin"
         state: directory
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
@@ -15,7 +15,7 @@
 
     - name: Create directory for Jellyfin config
       file:
-        path: "{{ local_jellyfin_storage_path }}"
+        path: "{{ local_apps_storage_path }}/jellyfin"
         state: directory
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
@@ -24,14 +24,12 @@
     - name: Upload jellyfin docker-compose
       template:
         src: "jellyfin/docker-compose.yml"
-        dest: "{{ local_jellyfin_path }}/docker-compose.yml"
+        dest: "{{ local_apps_path }}/jellyfin/docker-compose.yml"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
         mode: 0600
 
     - name: Create and start services
-      community.docker.docker_compose:
-        project_src: "{{ local_jellyfin_path }}"
-      register: output
+      command: docker compose -f {{ local_apps_path }}/jellyfin/docker-compose.yml up -d
 
 

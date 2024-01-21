@@ -1,7 +1,7 @@
 ---
-- hosts: nas
+- hosts: homelab-prod
   tasks:
     - name: "Configure hostname"
       ansible.builtin.hostname:
-        name: "nas"
+        name: "SERVER"
       become: true

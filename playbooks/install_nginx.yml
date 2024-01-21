@@ -1,7 +1,7 @@
 # This script is responsible for nginx installation
 
 ---
-- hosts: thinky01
+- hosts: racknerd
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 
@@ -24,6 +24,12 @@
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
         mode: 0600
+
+    - name: Install Docker SDK for Python
+      ansible.builtin.pip:
+        name:
+          - "docker==6.1.3"
+          - "docker-compose"
 
     - name: Create and start services
       community.docker.docker_compose:

@@ -11,6 +11,8 @@ Some of the scripts might be unsafe. I'm aware one is not supposed to operate as
 
 ### Homelab
 
+To setup homelab production, run `make setup_homelab_production`
+
 - `make install_docker` will install Docker on the server.
 - `make portainer` will install Portainer on the server.
 - `make immich` will install Immich on the server. It will also create an automated config for backups: a cron job that will run once a month. Cron job will create a backup of the immich db and uploaded photos and _sync_ them with Backblaze B2 bucket.

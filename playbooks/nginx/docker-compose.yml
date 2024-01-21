@@ -9,5 +9,5 @@ services:
       - '81:81'
       - '443:443'
     volumes:
-      - /home/frey/apps/nginx/data:/data
-      - /home/frey/apps/nginx/letsencrypt:/etc/letsencrypt
+      - /root/apps/nginx/data:/data
+      - /root/apps/nginx/letsencrypt:/etc/letsencrypt

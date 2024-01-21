@@ -60,3 +60,12 @@ install_nginx:
 
 install_nextcloud:
 	ansible-playbook -k -K playbooks/install_nextcloud.yml -i inventory.txt
+
+install_igp:
+	ansible-playbook -k -K playbooks/install_igp.yml -i inventory.txt
+
+install_glances:
+	ansible-playbook -k -K playbooks/install_glances.yml -i inventory.txt
+
+setup_homelab_production:
+	ansible-playbook -Kk -i inventory.txt playbooks/homelab_production.yml

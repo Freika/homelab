@@ -1,0 +1,23 @@
+# This script is responsible for Glances installation
+
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for Glances
+      file:
+        path: "{{ local_apps_path }}/glances"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload Glances docker-compose.yml
+      copy:
+        src: ./glances/docker-compose.yml
+        dest: "{{ local_apps_path }}/glances/docker-compose.yml"
+        mode: 0644
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/glances/docker-compose.yml up -d

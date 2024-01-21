@@ -1,0 +1,27 @@
+# This script is responsible for Influxdb-Grafana-Prometheus installation
+
+---
+- hosts: thinky01
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for Monitoring stack
+      file:
+        path: "{{ local_igp_path }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload Monitoring stack docker-compose.yml
+      template:
+        src: "influxdb-grafana-prometheus/docker-compose.yml"
+        dest: "{{ local_igp_path }}/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: "{{ local_igp_path }}"
+      register: output

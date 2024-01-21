@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  monitoring:
+    image: nicolargo/glances:latest-alpine
+    restart: always
+    pid: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "GLANCES_OPT=-w"
+    ports:
+      - "61208:61208"

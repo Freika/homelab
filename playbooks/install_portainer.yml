@@ -1,12 +1,9 @@
 ---
-- hosts: thinky01
+- hosts: homelab-prod
   vars:
-    docker_compose_version: "2.12.2"
+    docker_compose_version: "2.23.3"
 
   tasks:
-    - import_tasks: ../tasks/rename_host.yml
-      vars:
-        hostname: thinky01
     - import_tasks: ../tasks/apt-upgrade.yml
 
     - name: Ensure docker deamon is running

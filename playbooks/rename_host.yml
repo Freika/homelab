@@ -1,0 +1,6 @@
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/rename_host.yml
+      vars:
+        hostname: "homelab-production"
