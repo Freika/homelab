@@ -7,7 +7,7 @@
 
     - name: Create directory for Immich
       file:
-        path: "{{ local_immich_path }}"
+        path: "{{ local_apps_path }}/immich"
         state: directory
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
@@ -16,25 +16,25 @@
     - name: Upload Immich docker-compose.yml
       copy:
         src: ./immich/docker-compose.yml
-        dest: "{{ local_immich_path }}/docker-compose.yml"
+        dest: "{{ local_apps_path }}/immich/docker-compose.yml"
         mode: 0644
 
     - name: Upload Immich .env
       copy:
         src: ./immich/example.env
-        dest: "{{ local_immich_path }}/.env"
+        dest: "{{ local_apps_path }}/immich/.env"
         mode: 0644
 
     - name: Replace UPLOAD_LOCATION in .env file
       lineinfile:
-        path: "{{ local_immich_path }}/.env"
+        path: "{{ local_apps_path }}/immich/.env"
         regexp: '^UPLOAD_LOCATION=.*$'
-        line: "UPLOAD_LOCATION={{ local_immich_path }}/app"
+        line: "UPLOAD_LOCATION={{ local_apps_path }}/immich/app"
 
     - pip: name=docker-compose
 
     - name: Create and start services
-      command: docker compose -f {{ local_immich_path }}/docker-compose.yml up -d
+      command: docker compose -f {{ local_apps_path }}/immich/docker-compose.yml up -d
 
     - name: Install rclone
       apt:

@@ -35,7 +35,6 @@ backblaze_hard_delete=true
 backblaze_bucket_name=backblaze-bucket-name
 backblaze_remote_name=backblaze-remote-name
 local_backup_path=/media/hdd/immich
-local_immich_path=/media/hdd/immich
 healthchecks_ping_url='http://192/168.0.1:8020/ping/'
 hc_paperless_backup_uuid=''
 hc_paperless_backup_uploaded_uuid=''

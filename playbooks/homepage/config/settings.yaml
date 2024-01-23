@@ -1,0 +1,21 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: weatherapiapikey
+
+layout:
+  Media:
+    style: row
+    columns: 2
+  Statistics (Thinky):
+    style: row
+    columns: 4
+  Statistics (Nas):
+    style: row
+    columns: 4
+  Applications:
+    style: row
+    columns: 4

@@ -1,0 +1,42 @@
+# This script is responsible for homepage installation
+
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for homepage
+      file:
+        path: "{{ local_apps_path }}/homepage"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload homepage docker-compose.yml
+      copy:
+        src: ./homepage/docker-compose.yml
+        dest: "{{ local_apps_path }}/homepage/docker-compose.yml"
+        mode: 0644
+
+    # First start of homepage will fail because of existing config files
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/homepage/docker-compose.yml up -d
+
+    # Then copy config files
+    - name: Copy config files
+      copy:
+        src: '{{item}}'
+        dest: "{{ local_apps_path }}/homepage/config"
+        owner: root
+        group: root
+        mode: 0644
+      loop:
+        - ./homepage/config/services.yaml
+        - ./homepage/config/docker.yaml
+        - ./homepage/config/settings.yaml
+        - ./homepage/config/widgets.yaml
+
+    # Then restart services to apply config files
+    - name: Restart services
+      command: "docker compose -f {{ local_apps_path }}/homepage/docker-compose.yml restart"

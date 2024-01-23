@@ -1,3 +1,10 @@
+###
+
+setup_homelab_production:
+	ansible-playbook -Kk -i inventory.txt playbooks/homelab_production.yml
+
+###
+
 install_portainer:
 	ansible-playbook -k -K playbooks/install_portainer.yml
 
@@ -67,5 +74,11 @@ install_igp:
 install_glances:
 	ansible-playbook -k -K playbooks/install_glances.yml -i inventory.txt
 
-setup_homelab_production:
-	ansible-playbook -Kk -i inventory.txt playbooks/homelab_production.yml
+install_owntracks:
+	ansible-playbook -k -K playbooks/install_owntracks.yml -i inventory.txt
+
+install_homepage:
+	ansible-playbook -k -K playbooks/install_homepage.yml -i inventory.txt
+
+install_gitea:
+	ansible-playbook -k -K playbooks/install_gitea.yml -i inventory.txt

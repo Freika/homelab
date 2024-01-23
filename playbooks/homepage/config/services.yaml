@@ -1,0 +1,120 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Media:
+    - Immich:
+        href: http://192.168.178.200:2283/
+        server: homelab-prod
+        container: immich_server
+        icon: immich
+        siteMonitor: http://192.168.178.200:2283/
+        widget:
+            type: immich
+            url: http://192.168.178.200:2283
+            key: tOScguzDW1MnJp6gvuYf1C9fyDnQCiVwOWKfIdQOZY
+    - Jellyfin:
+        href: http://192.168.178.200:8096
+        server: homelab-prod
+        icon: jellyfin
+        container: jellyfin
+        siteMonitor: http://192.168.178.200:8096
+
+- Applications:
+    - Kling:
+        href: https://kling.frey.today/api/v1/portfolios/9583bafb-28c4-411a-9567-1172a00f6944.json
+        server: kling.frey.today
+        siteMonitor: https://kling.frey.today
+        widget:
+            type: customapi
+            url: https://kling.frey.today/api/v1/portfolios/9583bafb-28c4-411a-9567-1172a00f6944.json
+            refreshInterval: 300000
+            method: GET
+            mappings:
+                - field: total_worth
+                  label: Total Worth
+                  type: text
+                  suffix: "$"
+                - field: profit_and_loss
+                  label: PNL
+                  type: number
+                  suffix: "$"
+                - field: percent_change
+                  label: Percent Change
+                  type: text
+                  decimals: 2
+                  suffix: "%"
+    - PiHole:
+        href: http://192.168.178.200:8014/admin/index.php
+        server: homelab-prod
+        container: pihole
+        siteMonitor: http://192.168.178.200:8014/admin/index.php
+        widget:
+            type: pihole
+            url: http://192.168.178.200:8014
+            key: ae88dd40a2413f6063c753382c26cb427f3a4d4d0cb082889d2ca28af70bfa88
+    - Healthchecks:
+        href: http://192.168.178.200:8020
+        server: homelab-prod
+        icon: healthchecks
+        container: healthchecks
+        siteMonitor: http://192.168.178.200:8020
+        widget:
+            type: healthchecks
+            url: http://192.168.178.200:8020
+            key: <YOUR_API_KEY>
+            uuid: <YOUR_CHECK_UUID>
+    - FritzBox:
+        href: https://fritz.box
+        ping: fritz.box
+        icon: avmfritzbox.png
+    - Excalidraw:
+        href: http://192.168.178.200:8013
+        server: homelab-prod
+        container: excalidraw
+        icon: excalidraw
+        siteMonitor: http://192.168.178.200:8013
+    - Gitea:
+        href: http://192.168.178.200:3040
+        server: homelab-prod
+        container: gitea
+        icon: gitea
+        siteMonitor: http://192.168.178.200:3040
+    - PaperlessNGX:
+        href: http://192.168.178.200:8010
+        server: homelab-prod
+        container: paperlessngx-webserver-1
+        siteMonitor: http://192.168.178.200:8010
+        icon: paperless
+    - OwnTracks:
+        href: http://192.168.178.200:8085
+        server: homelab-prod
+        container: owntracks-frontend-owntracks-frontend-1
+        siteMonitor: http://192.168.178.200:8085
+
+
+- Statistics (Prod):
+    - CPU Usage:
+        widget:
+            type: glances
+            url: http://192.168.178.200:61208
+            metric: cpu
+            chart: false
+    - Network Usage:
+        widget:
+            type: glances
+            url: http://192.168.178.200:61208
+            metric: network:eth0
+            chart: false
+    - Memory Usage:
+        widget:
+            type: glances
+            url: http://192.168.178.200:61208
+            metric: memory
+            chart: false
+    - Disk Usage:
+        widget:
+            type: glances
+            url: http://192.168.178.200:61208
+            metric: disk:sda
+            chart: false

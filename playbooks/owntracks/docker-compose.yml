@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  owntracks-recorder:
+      container_name: owntracks-recorder
+      image: owntracks/recorder
+  #    command: "--port 0"  # Seems to be needed to disable MQTT   # Old method, do not use.
+      environment:
+        - OTR_PORT=0  # 0 disables MQTT
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - ./volumes/owntracks-recorder/config:/config
+        - ./volumes/owntracks-recorder/store:/store
+      ports:
+        - 8083:8083
+      restart: unless-stopped
+  owntracks-frontend:
+    image: owntracks/frontend
+    ports:
+      - 8085:80
+    environment:
+      - SERVER_HOST=192.168.178.200
+      - SERVER_PORT=8083
+    restart: unless-stopped
+
+  mosquitto:
+    image: eclipse-mosquitto
+    environment:
+      - OTR_HOST=0.0.0.0
+    ports:
+      - 1883:1883
+      - 8883:8883
+    volumes:
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-logs:/mosquitto/logs
+      - mosquitto-conf:/mosquitto/config
+    restart: unless-stopped
+
+
+volumes:
+  store:
+  config:
+  mosquitto-data:
+  mosquitto-logs:
+  mosquitto-conf:

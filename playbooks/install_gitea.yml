@@ -1,0 +1,40 @@
+# This script is responsible for gitea installation
+
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for gitea
+      file:
+        path: "{{ local_apps_path }}/gitea"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Create directory for gitea data
+      file:
+        path: "{{ local_apps_path }}/gitea/data"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Create directory for gitea db
+      file:
+        path: "{{ local_apps_path }}/gitea/mysql"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload gitea docker-compose.yml
+      copy:
+        src: ./gitea/docker-compose.yml
+        dest: "{{ local_apps_path }}/gitea/docker-compose.yml"
+        mode: 0644
+
+    # First start of gitea will fail because of existing config files
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/gitea/docker-compose.yml up -d
