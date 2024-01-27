@@ -1,5 +1,8 @@
 ---
 version: "2.1"
+networks:
+  caddy_caddynet:
+    external: true
 services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
@@ -19,3 +22,5 @@ services:
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
     restart: unless-stopped
+    networks:
+      - caddy_caddynet

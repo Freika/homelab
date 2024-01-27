@@ -4,7 +4,7 @@ services:
     image: healthchecks/healthchecks:latest
     container_name: healthchecks
     environment:
-      - ALLOWED_HOSTS=localhost
+      - ALLOWED_HOSTS=healthchecks.chibi.rodeo
       - DB=sqlite
       - DB_NAME=/data/hc.sqlite
       - DEBUG=False
@@ -15,11 +15,17 @@ services:
       - EMAIL_PORT=587
       - EMAIL_USE_TLS=True
       - SECRET_KEY=---
-      - SITE_ROOT=http://localhost:8000
+      - SITE_ROOT=https://healthchecks.chibi.rodeo
     ports:
       - 8020:8000
     volumes:
       - healthchecks-data:/data
     restart: unless-stopped
+    networks:
+      - caddy_caddynet
 volumes:
     healthchecks-data:
+
+networks:
+  caddy_caddynet:
+    external: true

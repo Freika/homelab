@@ -1,0 +1,31 @@
+# This script is responsible for uptime-kuma installation
+
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for uptime-kuma
+      file:
+        path: "{{ local_apps_path }}/uptime-kuma"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Create data directory for uptime-kuma
+      file:
+        path: "{{ local_apps_path }}/uptime-kuma/data"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload uptime-kuma docker-compose.yml
+      copy:
+        src: ./uptime-kuma/docker-compose.yml
+        dest: "{{ local_apps_path }}/uptime-kuma/docker-compose.yml"
+        mode: 0644
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/uptime-kuma/docker-compose.yml up -d

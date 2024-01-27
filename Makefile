@@ -85,3 +85,12 @@ install_gitea:
 
 install_caddy:
 	ansible-playbook -k -K playbooks/install_caddy.yml -i inventory.txt
+
+update_caddyfile:
+	ansible-playbook -k -K playbooks/update_caddyfile.yml -i inventory.txt
+
+install_uptimekuma:
+	ansible-playbook -k -K playbooks/install_uptimekuma.yml -i inventory.txt
+
+install_healthchecks:
+	ansible-playbook -k -K playbooks/install_healthchecks.yml -i inventory.txt

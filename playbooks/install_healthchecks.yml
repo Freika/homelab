@@ -1,16 +1,30 @@
 ---
-- hosts: thinky01
+- hosts: homelab-prod
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 
+    - name: Create directory for healthchecks
+      file:
+        path: "{{ local_apps_path }}/healthchecks"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
     - name: Upload healthchecks docker-compose.yml
       copy:
-        src: .healthchecks/docker-compose.yml
-        dest: /home/frey/apps/healthchecks/docker-compose.yml
+        src: ./healthchecks/docker-compose.yml
+        dest: "{{ local_apps_path }}/healthchecks/docker-compose.yml"
         owner: frey
         group: frey
         mode: 0644
 
-    # ... Setup super user, etc.
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/healthchecks/docker-compose.yml up -d
+
+
+    # Then create a superuser:
+    # $ docker-compose run web /opt/healthchecks/manage.py createsuperuser
+
 
     # - name: Install runitor

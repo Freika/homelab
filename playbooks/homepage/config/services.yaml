@@ -64,6 +64,12 @@
             url: http://192.168.178.200:8020
             key: <YOUR_API_KEY>
             uuid: <YOUR_CHECK_UUID>
+    - UptimeKuma:
+        href: https://uptime.chibi.rodeo
+        widget:
+            type: uptimekuma
+            url: https://uptime.chibi.rodeo
+            slug: everything
     - FritzBox:
         href: https://fritz.box
         ping: fritz.box

@@ -29,7 +29,7 @@
         group: "{{ ansible_user }}"
         mode: 0600
 
-    - name: Create and start services
-      command: docker compose -f {{ local_apps_path }}/jellyfin/docker-compose.yml up -d
+    - name: Restart services
+      command: docker compose -f {{ local_apps_path }}/jellyfin/docker-compose.yml restart
 
 

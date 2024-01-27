@@ -18,3 +18,24 @@ homepage.chibi.rodeo {
 		dns cloudflare 123
 	}
 }
+
+jellyfin.chibi.rodeo {
+	reverse_proxy localhost:8096
+	tls {
+		dns cloudflare 123
+	}
+}
+
+uptime.chibi.rodeo {
+	reverse_proxy uptime-kuma:3001
+	tls {
+		dns cloudflare 123
+	}
+}
+
+healthchecks.chibi.rodeo {
+	reverse_proxy healthchecks:8000
+	tls {
+		dns cloudflare 123
+	}
+}
