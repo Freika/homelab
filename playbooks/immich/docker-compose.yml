@@ -24,6 +24,9 @@ services:
       - redis
       - database
     restart: always
+    networks:
+      - caddy_caddynet
+      - default
 
   immich-microservices:
     container_name: immich_microservices
@@ -41,6 +44,8 @@ services:
       - redis
       - database
     restart: always
+    networks:
+      - default
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -50,11 +55,15 @@ services:
     env_file:
       - .env
     restart: always
+    networks:
+      - default
 
   redis:
     container_name: immich_redis
     image: redis:6.2-alpine@sha256:c5a607fb6e1bb15d32bbcf14db22787d19e428d59e31a5da67511b49bb0f1ccc
     restart: always
+    networks:
+      - default
 
   database:
     container_name: immich_postgres
@@ -68,7 +77,13 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
+    networks:
+      - default
 
 volumes:
   pgdata:
   model-cache:
+
+networks:
+  caddy_caddynet:
+    external: true

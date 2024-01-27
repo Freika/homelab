@@ -1,0 +1,57 @@
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for caddy
+      file:
+        path: "{{ local_apps_path }}/caddy"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Copy necessafy files
+      copy:
+        src: '{{item}}'
+        dest: "{{ local_apps_path }}/caddy"
+        owner: root
+        group: root
+        mode: 0644
+      loop:
+        - ./caddy/container-vars.env
+        - ./caddy/Caddyfile
+        - ./caddy/Dockerfile
+        - ./caddy/docker-compose.yml
+
+    - name: Replace MY_DOMAIN in container-vars.env file
+      lineinfile:
+        path: "{{ local_apps_path }}/caddy/container-vars.env"
+        regexp: '^MY_DOMAIN=.*$'
+        line: "MY_DOMAIN={{ homelab_domain }}"
+
+    - name: Replace MY_HOST_IP in container-vars.env file
+      lineinfile:
+        path: "{{ local_apps_path }}/caddy/container-vars.env"
+        regexp: '^MY_HOST_IP=.*$'
+        line: "MY_HOST_IP={{ homelab_tailscale_ip }}"
+
+    - name: Replace CLOUDFLARE_API_TOKEN in container-vars.env file
+      lineinfile:
+        path: "{{ local_apps_path }}/caddy/container-vars.env"
+        regexp: '^CLOUDFLARE_API_TOKEN=.*$'
+        line: "CLOUDFLARE_API_TOKEN={{ cf_api_token }}"
+
+    - name: Replace CLOUDFLARE_API_TOKEN in Caddyfile
+      replace:
+        path: "{{ local_apps_path }}/caddy/Caddyfile"
+        regexp: 'dns cloudflare 123'
+        replace: "    dns cloudflare {{ cf_api_token }}"
+
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/caddy/docker-compose.yml down
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/caddy/docker-compose.yml up -d
+
+

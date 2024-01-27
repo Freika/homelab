@@ -15,6 +15,9 @@
 - name: Install Portainer
   import_playbook: install_portainer.yml
 
+- name: Install Caddy
+  import_playbook: install_caddy.yml
+
 - name: Install Glances
   import_playbook: install_glances.yml
 

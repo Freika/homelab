@@ -3,6 +3,8 @@ version: "3"
 networks:
   gitea:
     external: false
+  caddy_caddynet:
+    external: true
 
 services:
   server:
@@ -19,6 +21,7 @@ services:
     restart: always
     networks:
       - gitea
+      - caddy_caddynet
     volumes:
       - /storage-pool/apps/gitea/data:/data
       - /etc/timezone:/etc/timezone:ro

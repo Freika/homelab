@@ -1,0 +1,13 @@
+gitea.chibi.rodeo {
+	reverse_proxy gitea:3000
+	tls {
+		dns cloudflare 123
+	}
+}
+
+immich.chibi.rodeo {
+	reverse_proxy immich_server:3001
+	tls {
+		dns cloudflare 123
+	}
+}

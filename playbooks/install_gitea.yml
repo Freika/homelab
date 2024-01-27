@@ -35,6 +35,8 @@
         dest: "{{ local_apps_path }}/gitea/docker-compose.yml"
         mode: 0644
 
-    # First start of gitea will fail because of existing config files
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/gitea/docker-compose.yml down
+
     - name: Create and start services
       command: docker compose -f {{ local_apps_path }}/gitea/docker-compose.yml up -d

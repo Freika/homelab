@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  caddy:
+    build: .
+    container_name: caddy
+    hostname: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    networks:
+      - caddynet
+    env_file:
+      - container-vars.env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data:/data
+      - ./config:/config
+      - /var/run/docker.sock:/var/run/docker.sock
+    # labels:
+      # caddy.email: mail@example.com
+
+  # whoami:
+  #   image: "containous/whoami"
+  #   container_name: "whoami"
+  #   hostname: "whoami"
+  #   networks:
+  #     - caddynet
+
+networks:
+  caddynet:
+    attachable: true
+    driver: bridge

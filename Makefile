@@ -82,3 +82,6 @@ install_homepage:
 
 install_gitea:
 	ansible-playbook -k -K playbooks/install_gitea.yml -i inventory.txt
+
+install_caddy:
+	ansible-playbook -k -K playbooks/install_caddy.yml -i inventory.txt

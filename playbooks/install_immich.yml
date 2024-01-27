@@ -33,6 +33,9 @@
 
     - pip: name=docker-compose
 
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/immich/docker-compose.yml up -d
+
     - name: Create and start services
       command: docker compose -f {{ local_apps_path }}/immich/docker-compose.yml up -d
 
