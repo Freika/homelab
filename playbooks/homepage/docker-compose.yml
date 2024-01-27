@@ -1,4 +1,7 @@
 version: "3.3"
+networks:
+  caddy_caddynet:
+    external: true
 services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -12,3 +15,5 @@ services:
       - /storage-pool/apps/homepage/config:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
     restart: unless-stopped
+    networks:
+      - caddy_caddynet

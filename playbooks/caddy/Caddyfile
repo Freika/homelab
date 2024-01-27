@@ -11,3 +11,10 @@ immich.chibi.rodeo {
 		dns cloudflare 123
 	}
 }
+
+homepage.chibi.rodeo {
+	reverse_proxy homepage:3000
+	tls {
+		dns cloudflare 123
+	}
+}
