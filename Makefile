@@ -94,3 +94,6 @@ install_uptimekuma:
 
 install_healthchecks:
 	ansible-playbook -k -K playbooks/install_healthchecks.yml -i inventory.txt
+
+install_pihole:
+	ansible-playbook -k -K playbooks/install_pihole.yml -i inventory.txt

@@ -4,14 +4,14 @@
 
 - Media:
     - Immich:
-        href: http://192.168.178.200:2283/
+        href: https://immich.chibi.rodeo/
         server: homelab-prod
         container: immich_server
         icon: immich
-        siteMonitor: http://192.168.178.200:2283/
+        siteMonitor: https://immich.chibi.rodeo/
         widget:
             type: immich
-            url: http://192.168.178.200:2283
+            url: https://immich.chibi.rodeo
             key: tOScguzDW1MnJp6gvuYf1C9fyDnQCiVwOWKfIdQOZY
     - Jellyfin:
         href: http://192.168.178.200:8096
@@ -45,13 +45,13 @@
                   decimals: 2
                   suffix: "%"
     - PiHole:
-        href: http://192.168.178.200:8014/admin/index.php
+        href: https://pihole.chibi.rodeo/admin/index.php
         server: homelab-prod
         container: pihole
-        siteMonitor: http://192.168.178.200:8014/admin/index.php
+        siteMonitor: https://pihole.chibi.rodeo/admin/index.php
         widget:
             type: pihole
-            url: http://192.168.178.200:8014
+            url: https://pihole.chibi.rodeo
             key: ae88dd40a2413f6063c753382c26cb427f3a4d4d0cb082889d2ca28af70bfa88
     - Healthchecks:
         href: http://192.168.178.200:8020
@@ -71,7 +71,7 @@
             url: https://uptime.chibi.rodeo
             slug: everything
     - FritzBox:
-        href: https://fritz.box
+        href: http://192.168.178.1
         ping: fritz.box
         icon: avmfritzbox.png
     - Excalidraw:
@@ -81,11 +81,11 @@
         icon: excalidraw
         siteMonitor: http://192.168.178.200:8013
     - Gitea:
-        href: http://192.168.178.200:3040
+        href: https://gitea.chibi.rodeo
         server: homelab-prod
         container: gitea
         icon: gitea
-        siteMonitor: http://192.168.178.200:3040
+        siteMonitor: https://gitea.chibi.rodeo
     - PaperlessNGX:
         href: http://192.168.178.200:8010
         server: homelab-prod

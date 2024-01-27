@@ -19,6 +19,18 @@
         dest: "{{ local_apps_path }}/pihole/docker-compose.yml"
         mode: 0644
 
+    - name: Stop systemd-resolved
+      systemd:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
+
+    - name: Disable systemd-resolved
+      systemd:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
+
     - name: Create and start services
       command: docker compose -f {{ local_apps_path }}/pihole/docker-compose.yml up -d
 

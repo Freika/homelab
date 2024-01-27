@@ -39,3 +39,10 @@ healthchecks.chibi.rodeo {
 		dns cloudflare 123
 	}
 }
+
+pihole.chibi.rodeo {
+	reverse_proxy pihole:80
+	tls {
+		dns cloudflare 123
+	}
+}
