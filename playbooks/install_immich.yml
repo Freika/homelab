@@ -19,17 +19,13 @@
         dest: "{{ local_apps_path }}/immich/docker-compose.yml"
         mode: 0644
 
-    - name: Upload Immich .env
-      copy:
+    - name: Upload Immich backup script
+      template:
         src: ./immich/example.env
         dest: "{{ local_apps_path }}/immich/.env"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
         mode: 0644
-
-    - name: Replace UPLOAD_LOCATION in .env file
-      lineinfile:
-        path: "{{ local_apps_path }}/immich/.env"
-        regexp: '^UPLOAD_LOCATION=.*$'
-        line: "UPLOAD_LOCATION={{ local_apps_path }}/immich/app"
 
     - pip: name=docker-compose
 
@@ -56,31 +52,31 @@
         group: "{{ ansible_user }}"
         mode: 0600
 
-    - name: Replace account in rclone.conf
-      lineinfile:
-        path: "/home/{{ ansible_user }}/.config/rclone/rclone.conf"
-        regexp: '^account = .*$'
-        line: "account = {{ backblaze_app_key_id }}"
+    - name: Create directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0775
+      loop:
+        - "{{ local_pool_path }}/tasks/immich/"
+        - "{{ local_backups_path }}/immich"
 
-    - name: Replace key in rclone.conf
-      lineinfile:
-        path: "/home/{{ ansible_user }}/.config/rclone/rclone.conf"
-        regexp: '^key = .*$'
-        line: "key = {{ backblaze_app_key }}"
 
-    - name: Schedule Immich DB backup to be done daily
+    - name: Upload Immich backup script
+      template:
+        src: "./immich/backup.sh"
+        dest: "{{ local_pool_path }}/tasks/immich/backup.sh"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0700
+
+    - name: Schedule Immich DB backup to be done monthly
       cron:
         name: "Dump Immich DB to a local file"
         minute: "45"
         hour: "5"
-        job: docker exec -t immich_postgres pg_dumpall -c -U postgres | gzip > "{{ local_backup_path }}/db_dump.sql.gz" && curl -X GET {{ healthchecks_ping_url }}{{ hc_immich_backup_uuid }}
-        state: present
-
-    - name: Schedule photos backup to be done once a month
-      cron:
-        name: "Backup immich files to B2"
-        minute: "55"
-        hour: "3"
-        day: "15"
-        job: /usr/bin/rclone sync {{ local_backup_path }} {{ backblaze_remote_name }}:{{ backblaze_bucket_name }} --config /home/{{ ansible_user }}/.config/rclone/rclone.conf --include='/app/library/**' --include='/app/upload/**' --include='/app/profile/**' && curl -X GET {{ healthchecks_ping_url }}{{ hc_immich_backup_uploaded_uuid }}
+        day: "1"
+        job: "{{ local_pool_path }}/tasks/immich/backup.sh"
         state: present

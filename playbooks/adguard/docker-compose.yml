@@ -1,0 +1,35 @@
+---
+version: "3"
+
+networks:
+  caddy_caddynet:
+    external: true
+
+services:
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    volumes:
+      - ./conf:/opt/adguardhome/conf
+      - ./work:/opt/adguardhome/work
+    ports:
+        # DNS
+        - 53:53
+        # WebUI
+        - 3000:3000/tcp
+          # # DHCP server
+        - 67:67/udp
+          # - 68:68/tcp
+          # - 68:68/udp
+          # # HTTPS/DNS-over-HTTPS
+          # - 443:443/tcp
+          # # DNS-over-TLS
+          # - 853:853/tcp
+          # # DNS-over-QUIC
+          # - 784:784/udp
+          # # DNSCrypt
+          # - 5443:5443/tcp
+          # - 5443:5443/udp
+    restart: unless-stopped
+    networks:
+        - caddy_caddynet

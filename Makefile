@@ -38,6 +38,9 @@ backup:
 install_immich:
 	ansible-playbook -k -K playbooks/install_immich.yml -i inventory.txt
 
+update_immich:
+	ansible-playbook -k -K playbooks/update_immich.yml -i inventory.txt
+
 install_paperless:
 	ansible-playbook -k -K playbooks/paperless-ngx.yml -i inventory.txt
 
@@ -97,3 +100,13 @@ install_healthchecks:
 
 install_pihole:
 	ansible-playbook -k -K playbooks/install_pihole.yml -i inventory.txt
+
+install_mailrise:
+	ansible-playbook -k -K playbooks/install_mailrise.yml -i inventory.txt
+
+install_ackee:
+	ansible-playbook -k -K playbooks/install_ackee.yml -i inventory.txt
+
+install_adguard:
+	ansible-playbook -k -K playbooks/install_adguard.yml -i inventory.txt
+

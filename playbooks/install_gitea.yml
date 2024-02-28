@@ -40,3 +40,26 @@
 
     - name: Create and start services
       command: docker compose -f {{ local_apps_path }}/gitea/docker-compose.yml up -d
+
+    # 1. Stop Gitea
+    # 2. Make backup
+    # 3. Start Gitea
+    # 4. Upload backup
+
+
+    # - name: Schedule Gitea DB backup to be done daily
+    #   cron:
+    #     name: "Backup Gitea DB"
+    #     minute: "45"
+    #     hour: "5"
+    #     job: docker compose -f {{ local_apps_path }}/gitea/docker-compose.yml down &&
+
+
+    #   docker exec -u {{ ansible_user }} -it -w {{ local_apps_path }}/gitea $(docker ps -qf 'name=^gitea-db-1$') bash -c '/usr/local/bin/gitea dump -c /data/gitea/conf/app.ini
+
+
+
+
+    #     exec -T gitea_db mysqldump -u root --password={{ gitea_db_password }} gitea | gzip > "{{ local_backup_path }}/gitea_db_dump.sql.gz" && curl -X GET {{ healthchecks_ping_url }}{{ hc_gitea_backup_uuid }}
+    #     # job: docker exec -t immich_postgres pg_dumpall -c -U postgres | gzip > "{{ local_backup_path }}/db_dump.sql.gz" && curl -X GET {{ healthchecks_ping_url }}{{ hc_immich_backup_uuid }}
+    #     state: present

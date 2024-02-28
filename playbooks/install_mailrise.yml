@@ -3,41 +3,43 @@
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 
-    - name: Create directory for healthchecks
+    - name: Create directory for mailrise
       file:
-        path: "{{ local_apps_path }}/healthchecks"
+        path: "{{ local_apps_path }}/mailrise"
         state: directory
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
         mode: 0755
 
-    - name: Upload healthchecks docker-compose.yml
+    - name: Upload mailrise docker-compose.yml
       copy:
-        src: ./healthchecks/docker-compose.yml
-        dest: "{{ local_apps_path }}/healthchecks/docker-compose.yml"
+        src: ./mailrise/docker-compose.yml
+        dest: "{{ local_apps_path }}/mailrise/docker-compose.yml"
         owner: frey
         group: frey
         mode: 0644
 
     # - name: Replace TELEGRAM_BOT_NAME in docker-compose.yml
     #   replace:
-    #     path: "{{ local_apps_path }}/healthchecks/docker-compose.yml"
+    #     path: "{{ local_apps_path }}/mailrise/docker-compose.yml"
     #     regexp: '{TELEGRAM_BOT_NAME}'
     #     replace: "{{ homelab_telegram_bot_name }}"
 
     # - name: Replace TELEGRAM_BOT_TOKEN in docker-compose.yml
     #   replace:
-    #     path: "{{ local_apps_path }}/healthchecks/docker-compose.yml"
+    #     path: "{{ local_apps_path }}/mailrise/docker-compose.yml"
     #     regexp: '{TELEGRAM_BOT_TOKEN}'
     #     replace: "{{ homelab_telegram_bot_token }}"
 
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/mailrise/docker-compose.yml down
+
     - name: Create and start services
-      command: docker compose -f {{ local_apps_path }}/healthchecks/docker-compose.yml restart
+      command: docker compose -f {{ local_apps_path }}/mailrise/docker-compose.yml up -d
 
 
     # Then create a superuser:
-    # $ docker compose run healthchecks /opt/healthchecks/manage.py createsuperuser
-    # Visit https://healthchecks.chibi.rodeo
+    # $ docker-compose run web /opt/mailrise/manage.py createsuperuser
 
 
     # - name: Install runitor

@@ -1,0 +1,37 @@
+# This script is responsible for adguard installation
+
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for adguard
+      file:
+        path: "{{ local_apps_path }}/adguard"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload adguard docker-compose.yml
+      copy:
+        src: ./adguard/docker-compose.yml
+        dest: "{{ local_apps_path }}/adguard/docker-compose.yml"
+        mode: 0644
+
+    - name: Stop systemd-resolved
+      systemd:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
+
+    - name: Disable systemd-resolved
+      systemd:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/adguard/docker-compose.yml up -d
+
+

@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  mailrise:
+    image: yoryan/mailrise:latest
+    container_name: mailrise
+    ports:
+      - '8025:8025'
+    restart: unless-stopped
+    volumes:
+      - ./mailrise/mailrise.conf:/etc/mailrise.conf:ro

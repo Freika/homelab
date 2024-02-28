@@ -10,12 +10,12 @@ layout:
   Media:
     style: row
     columns: 2
-  Statistics (Thinky):
-    style: row
-    columns: 4
-  Statistics (Nas):
+  Statistics (Prod):
     style: row
     columns: 4
   Applications:
+    style: row
+    columns: 4
+  Todo:
     style: row
     columns: 4

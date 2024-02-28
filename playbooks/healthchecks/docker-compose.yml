@@ -4,7 +4,7 @@ services:
     image: healthchecks/healthchecks:latest
     container_name: healthchecks
     environment:
-      - ALLOWED_HOSTS=healthchecks.chibi.rodeo
+      - ALLOWED_HOSTS=healthchecks.chibi.rodeo,192.168.178.200
       - DB=sqlite
       - DB_NAME=/data/hc.sqlite
       - DEBUG=False
@@ -15,6 +15,8 @@ services:
       - EMAIL_PORT=587
       - EMAIL_USE_TLS=True
       - SECRET_KEY=---
+      - TELEGRAM_BOT_NAME={TELEGRAM_BOT_NAME}
+      - TELEGRAM_TOKEN={TELEGRAM_BOT_TOKEN}
       - SITE_ROOT=https://healthchecks.chibi.rodeo
     ports:
       - 8020:8000

@@ -12,7 +12,7 @@ immich.chibi.rodeo {
 	}
 }
 
-homepage.chibi.rodeo {
+chibi.rodeo {
 	reverse_proxy homepage:3000
 	tls {
 		dns cloudflare 123
@@ -42,6 +42,13 @@ healthchecks.chibi.rodeo {
 
 pihole.chibi.rodeo {
 	reverse_proxy pihole:80
+	tls {
+		dns cloudflare 123
+	}
+}
+
+pve.chibi.rodeo {
+	reverse_proxy 192.168.178.201:8006
 	tls {
 		dns cloudflare 123
 	}

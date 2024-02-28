@@ -1,0 +1,21 @@
+---
+- hosts: homelab-prod
+  tasks:
+    - name: Copy necessafy files
+      copy:
+        src: '{{item}}'
+        dest: "{{ local_apps_path }}/immich"
+        owner: root
+        group: root
+        mode: 0644
+      loop:
+        - ./immich/docker-compose.yml
+
+    - name: Pull latest images
+      command: docker compose -f {{ local_apps_path }}/immich/docker-compose.yml pull
+
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/immich/docker-compose.yml stop
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/immich/docker-compose.yml up -d
