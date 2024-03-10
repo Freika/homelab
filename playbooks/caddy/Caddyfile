@@ -53,3 +53,10 @@ pve.chibi.rodeo {
 		dns cloudflare 123
 	}
 }
+
+docs.chibi.rodeo {
+	reverse_proxy 192.168.178.200:8010
+	tls {
+		dns cloudflare 123
+	}
+}

@@ -1,0 +1,53 @@
+---
+- hosts: homelab-prod
+  vars:
+    local_backup_path: /home/{{ ansible_user }}/backups/paperlessngx/export
+
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+    - import_tasks: ../tasks/install_rclone.yml
+
+    - name: Create directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0775
+      loop:
+        - "{{ local_apps_path }}/paperlessngx/export"
+        - "{{ local_pool_path }}/tasks/paperlessngx/"
+        - "{{ local_backups_path }}/paperlessngx"
+
+    - name: Copy necessafy files
+      copy:
+        src: '{{item}}'
+        dest: "{{ local_apps_path }}/paperlessngx"
+        owner: root
+        group: root
+        mode: 0644
+      loop:
+        - ./paperlessngx/docker-compose.yml
+
+    - name: Upload paperlessngx backup script
+      template:
+        src: "./paperlessngx/backup.sh"
+        dest: "{{ local_pool_path }}/tasks/paperlessngx/backup.sh"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0700
+
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/paperlessngx/docker-compose.yml up -d
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/paperlessngx/docker-compose.yml up -d
+
+    - name: Schedule paperlessngx backup to be done monthly
+      cron:
+        name: "Dump paperlessngx to a local file"
+        minute: "45"
+        hour: "5"
+        day: "1"
+        job: "{{ local_pool_path }}/tasks/paperlessngx/backup.sh"
+        state: present

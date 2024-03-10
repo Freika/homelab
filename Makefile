@@ -42,7 +42,7 @@ update_immich:
 	ansible-playbook -k -K playbooks/update_immich.yml -i inventory.txt
 
 install_paperless:
-	ansible-playbook -k -K playbooks/paperless-ngx.yml -i inventory.txt
+	ansible-playbook -k -K playbooks/paperlessngx.yml -i inventory.txt
 
 install_go:
 	ansible-playbook -k -K playbooks/install_go.yml

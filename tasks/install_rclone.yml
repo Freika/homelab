@@ -1,0 +1,16 @@
+- name: Install rclone
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - rclone
+
+- name: Upload rclone B2 config
+  template:
+    src: "./immich/rclone.conf"
+    dest: "/home/{{ ansible_user }}/.config/rclone/rclone.conf"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0600

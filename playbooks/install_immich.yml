@@ -4,6 +4,7 @@
 - hosts: homelab-prod
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
+    - import_tasks: ../tasks/install_rclone.yml
 
     - name: Create directory for Immich
       file:
@@ -19,7 +20,7 @@
         dest: "{{ local_apps_path }}/immich/docker-compose.yml"
         mode: 0644
 
-    - name: Upload Immich backup script
+    - name: Upload Immich env vars
       template:
         src: ./immich/example.env
         dest: "{{ local_apps_path }}/immich/.env"
@@ -34,23 +35,6 @@
 
     - name: Create and start services
       command: docker compose -f {{ local_apps_path }}/immich/docker-compose.yml up -d
-
-    - name: Install rclone
-      apt:
-        name: "{{ packages }}"
-        state: present
-        update_cache: yes
-      vars:
-        packages:
-          - rclone
-
-    - name: Upload rclone B2 config
-      template:
-        src: "./immich/rclone.conf"
-        dest: "/home/{{ ansible_user }}/.config/rclone/rclone.conf"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: 0600
 
     - name: Create directory if they don't exist
       file:
