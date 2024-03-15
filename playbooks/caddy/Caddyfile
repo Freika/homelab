@@ -60,3 +60,10 @@ docs.chibi.rodeo {
 		dns cloudflare 123
 	}
 }
+
+registry.chibi.rodeo {
+	reverse_proxy registry:5000
+	tls {
+		dns cloudflare 123
+	}
+}

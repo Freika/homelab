@@ -59,6 +59,7 @@
             type: uptimekuma
             url: https://uptime.chibi.rodeo
             slug: everything
+        siteMonitor: http://192.168.178.200:3000
     - Proxmox:
         href: https://192.168.178.201:8006
         siteMonitor: https://192.168.178.201:8006
@@ -69,6 +70,10 @@
             username: api@pam!api
             password: 9cf7ef06-e143-4b77-be11-78075614b1c2
             node: pve-1 # optional
+    - Dawarich:
+        href: http://192.168.178.200:3000
+        server: homelab-prod
+        container: dawarich_app
     - Gitea:
         href: https://gitea.chibi.rodeo
         server: homelab-prod

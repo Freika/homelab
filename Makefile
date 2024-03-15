@@ -110,3 +110,6 @@ install_ackee:
 install_adguard:
 	ansible-playbook -k -K playbooks/install_adguard.yml -i inventory.txt
 
+install_registry:
+	ansible-playbook -k -K playbooks/install_registry.yml -i inventory.txt
+

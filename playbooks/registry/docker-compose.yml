@@ -1,0 +1,17 @@
+version: '3'
+
+networks:
+  caddy_caddynet:
+    external: true
+
+services:
+  registry:
+    image: registry:latest
+    ports:
+    - "5000:5000"
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+    volumes:
+      - ./data:/data
+    networks:
+      - caddy_caddynet

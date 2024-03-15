@@ -1,0 +1,32 @@
+---
+- hosts: homelab-prod
+
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0775
+      loop:
+        - "{{ local_apps_path }}/registry"
+        - "{{ local_apps_path }}/registry/data"
+
+    - name: Copy necessafy files
+      copy:
+        src: '{{item}}'
+        dest: "{{ local_apps_path }}/registry"
+        owner: root
+        group: root
+        mode: 0644
+      loop:
+        - ./registry/docker-compose.yml
+
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/registry/docker-compose.yml up -d
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/registry/docker-compose.yml up -d
