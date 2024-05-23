@@ -1,0 +1,30 @@
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for n8n
+      file:
+        path: "{{ local_apps_path }}/n8n"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Copy necessafy files
+      copy:
+        src: '{{item}}'
+        dest: "{{ local_apps_path }}/n8n"
+        owner: root
+        group: root
+        mode: 0644
+      loop:
+        - ./n8n/docker-compose.yml
+        - ./n8n/.env
+
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/n8n/docker-compose.yml up -d
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/n8n/docker-compose.yml up -d
+

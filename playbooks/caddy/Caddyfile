@@ -67,3 +67,17 @@ registry.chibi.rodeo {
 		dns cloudflare 123
 	}
 }
+
+dawarich.chibi.rodeo {
+	reverse_proxy 192.168.178.200:3000
+	tls {
+		dns cloudflare 123
+	}
+}
+
+n8n.chibi.rodeo {
+	reverse_proxy 192.168.178.200:5678
+	tls {
+		dns cloudflare 123
+	}
+}

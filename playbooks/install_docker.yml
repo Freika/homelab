@@ -1,5 +1,5 @@
 ---
-- hosts: homelab-prod
+- hosts: debian-test
   vars:
     docker_compose_version: "2.23.3"
   tasks:
@@ -69,9 +69,9 @@
           - python3-pip
           - mc
 
-    - name: Install python packages
-      pip:
-        name: docker
+    # - name: Install python packages
+    #   pip:
+    #     name: docker
 
     - name: Schedule Docker system prune -a to be done daily
       cron:

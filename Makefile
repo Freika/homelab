@@ -113,3 +113,9 @@ install_adguard:
 install_registry:
 	ansible-playbook -k -K playbooks/install_registry.yml -i inventory.txt
 
+install_lubelogger:
+	ansible-playbook -k -K playbooks/install_lubelogger.yml -i inventory.txt
+
+install_n8n:
+	ansible-playbook -k -K playbooks/install_n8n.yml -i inventory.txt
+

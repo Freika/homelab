@@ -1,5 +1,5 @@
 ---
-- hosts: homelab-prod
+- hosts: outline-moscow
   vars:
     docker_compose_version: "2.23.3"
 
@@ -28,6 +28,6 @@
           - portainer_data:/data
 
     # FIREWALL SETUP
-    - name: Disable UFW
-      ufw:
-        state: disabled
+    # - name: Disable UFW
+    #   ufw:
+    #     state: disabled
