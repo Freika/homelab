@@ -39,7 +39,7 @@ To add certificates to the app, you need to follow some steps before running the
 1. Add your domain to Cloudflare. You need to change the nameservers on your DNS provider (probably just where you have bought your domain). Create an account on Cloudflare and it will show you a step-by-step guide on how to do that (great onboarding by the way).
 2. Create certificates for your domain. On Cloudflare, open SSL/TLS -> Origin Server menu and press Create Certificate.
 3. Create two files in tmp folder: {{domain_name}}.crt and {{domain_name}}.key. Copy the content of the certificate and the private key in the files.
-4. Run `make dokku_add_ssl` command.
+4. Run `make add_dokku_ssl` command.
 5. Now set your domain SSL/TLS to Full on Cloudflare.
 6. You're beautiful!
 

@@ -1,3 +1,5 @@
 .DS_Store
 inventory.txt
 /tmp/**/*
+
+/playbooks/homepage/app/config/

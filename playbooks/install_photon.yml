@@ -1,0 +1,51 @@
+# This script is responsible for photon installation
+# https://tonsnoei.nl/en/post/2023/03/20/set-up-your-own-geocoder-api/
+
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for photon
+      file:
+        path: "{{ local_apps_path }}/photon"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Create directory for photon data
+      file:
+        path: "{{ local_apps_path }}/photon/data"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Copy necessafy files
+      copy:
+        src: '{{item}}'
+        dest: "{{ local_apps_path }}/photon"
+        owner: root
+        group: root
+        mode: 0644
+      loop:
+        - ./photon/docker-compose.yml
+        - ./photon/Dockerfile
+        - ./photon/entrypoint.sh
+
+    - name: Make photon/entrypoint.sh executable
+      command: chmod +x {{ local_apps_path }}/photon/entrypoint.sh
+
+    - name: Build docker image
+      command: docker compose -f {{ local_apps_path }}/photon/docker-compose.yml build
+
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/photon/docker-compose.yml stop
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/photon/docker-compose.yml up -d
+
+    - name: Attach to logs
+      command: docker compose -f {{ local_apps_path }}/photon/docker-compose.yml logs -f
+

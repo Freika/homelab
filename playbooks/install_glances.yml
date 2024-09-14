@@ -1,7 +1,7 @@
 # This script is responsible for Glances installation
 
 ---
-- hosts: homelab-prod
+- hosts: homelab-fuji
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 

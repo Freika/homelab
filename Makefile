@@ -119,3 +119,8 @@ install_lubelogger:
 install_n8n:
 	ansible-playbook -k -K playbooks/install_n8n.yml -i inventory.txt
 
+install_vaultwarden:
+	ansible-playbook -k -K playbooks/install_vaultwarden.yml -i inventory.txt
+
+install_photon:
+	ansible-playbook -k -K playbooks/install_photon.yml -i inventory.txt

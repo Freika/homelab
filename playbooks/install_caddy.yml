@@ -1,5 +1,5 @@
 ---
-- hosts: homelab-prod
+- hosts: homelab-fuji
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 
@@ -47,6 +47,11 @@
         path: "{{ local_apps_path }}/caddy/Caddyfile"
         regexp: 'dns cloudflare 123'
         replace: "    dns cloudflare {{ cf_api_token }}"
+
+    - name: Create external network caddy_caddynet
+      community.docker.docker_network:
+        name: caddy_caddynet
+        state: present
 
     - name: Restart existing services
       command: docker compose -f {{ local_apps_path }}/caddy/docker-compose.yml restart

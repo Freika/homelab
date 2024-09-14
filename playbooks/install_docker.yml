@@ -1,82 +1,91 @@
 ---
-- hosts: debian-test
+- hosts: homelab-fuji
+  become: yes
   vars:
-    docker_compose_version: "2.23.3"
+    docker_compose_version: "2.29.2"
   tasks:
-    - import_tasks: ../tasks/apt-upgrade.yml
 
-    - name: Install dependencies
-      apt:
-        name: "{{ packages }}"
-        state: present
+    # Step 1: Update apt package index
+    - name: Update apt cache
+      ansible.builtin.apt:
         update_cache: yes
-      vars:
-        packages:
-          - apt-transport-https
+
+    # Step 2: Install required packages (ca-certificates, curl, gnupg, lsb-release)
+    - name: Install required dependencies
+      ansible.builtin.apt:
+        name:
           - ca-certificates
           - curl
-          - software-properties-common
-          - gnupg-agent
-
-    # DOCKER INSTALLATION
-    - name: Add an apt signing key for Docker
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
+          - gnupg
+          - lsb-release
         state: present
 
-    - name: Add apt repository for stable version
-      apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    # Step 3: Create directory for apt keyrings
+    - name: Create directory for Docker apt keyring
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    # Step 4: Add Docker’s official GPG key
+    - name: Download Docker GPG key using curl
+      ansible.builtin.shell: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+      args:
+        creates: /etc/apt/keyrings/docker.asc
+
+    # Step 5: Set permissions on Docker GPG key
+    - name: Set permissions for Docker GPG key
+      ansible.builtin.file:
+        path: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+
+    # Step 6: Add Docker repository to apt sources
+    - name: Add Docker APT repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
         state: present
 
-    - name: Install Docker
-      apt:
-        name: "{{ packages }}"
-        state: present
+    # Step 7: Update apt package index again after adding Docker repo
+    - name: Update apt cache again after adding Docker repository
+      ansible.builtin.apt:
         update_cache: yes
-      vars:
-        packages:
+
+    # Step 8: Install Docker Engine
+    - name: Install Docker Engine
+      ansible.builtin.apt:
+        name:
           - docker-ce
           - docker-ce-cli
           - containerd.io
-
-    - name: Add user to docker group
-      user:
-        name: "{{ansible_user}}"
-        group: docker
-
-    - name: Download docker-compose {{ docker_compose_version }}
-      get_url:
-        url: https://github.com/docker/compose/releases/download/v{{ docker_compose_version }}/docker-compose-darwin-x86_64
-        dest: ~/docker-compose
-        mode: "+x"
-
-    - name: Check docker-compose exists
-      stat: path=~/docker-compose
-      register: docker_compose
-
-    - name: Move docker-compose to /usr/local/bin/docker-compose
-      command: mv ~/docker-compose /usr/local/bin/docker-compose
-      when: docker_compose.stat.exists
-
-    # REQUIRED PACKAGES FOR USING ANSIBLE DOCKER (for portainer installation below)
-    - name: Install related Ubuntu packages
-      apt:
-        name: "{{ packages }}"
-        state: latest
-      vars:
-        packages:
-          - python3-pip
-          - mc
-
-    # - name: Install python packages
-    #   pip:
-    #     name: docker
-
-    - name: Schedule Docker system prune -a to be done daily
-      cron:
-        name: "Remove all unused containers, networks, images (both dangling and unreferenced), and optionally, volumes."
-        minute: "55"
-        hour: "3"
-        job: docker system prune -a --force
         state: present
+
+    # Step 9: Ensure Docker service is enabled and running
+    - name: Ensure Docker is enabled and running
+      ansible.builtin.systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    # Step 10: Download and install Docker Compose
+    - name: Download Docker Compose
+      ansible.builtin.shell: |
+        curl -fsSL https://github.com/docker/compose/releases/download/v{{ docker_compose_version }}/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+      args:
+        creates: /usr/local/bin/docker-compose
+
+    # Step 11: Set execute permissions on Docker Compose binary
+    - name: Set execute permissions on Docker Compose
+      ansible.builtin.file:
+        path: /usr/local/bin/docker-compose
+        mode: '0755'
+
+    # Step 12: Verify Docker Compose installation
+    - name: Check Docker Compose version
+      ansible.builtin.command: /usr/local/bin/docker-compose --version
+      register: docker_compose_version_output
+
+    - name: Display Docker Compose version
+      debug:
+        msg: "Docker Compose version: {{ docker_compose_version_output.stdout }}"
+

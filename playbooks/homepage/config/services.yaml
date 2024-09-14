@@ -60,16 +60,6 @@
             url: https://uptime.chibi.rodeo
             slug: everything
         siteMonitor: http://192.168.178.200:3000
-    - Proxmox:
-        href: https://192.168.178.201:8006
-        siteMonitor: https://192.168.178.201:8006
-        icon: proxmox
-        widget:
-            type: proxmox
-            url: https://192.168.178.201:8006
-            username: api@pam!api
-            password: 9cf7ef06-e143-4b77-be11-78075614b1c2
-            node: pve-1 # optional
     - Dawarich:
         href: http://192.168.178.200:3000
         server: homelab-prod
@@ -85,10 +75,6 @@
         server: homelab-prod
         container: owntracks-owntracks-frontend-1
         siteMonitor: http://192.168.178.200:8085
-    - FritzBox:
-        href: http://192.168.178.1
-        ping: fritz.box
-        icon: avmfritzbox.png
 
 - Statistics (Prod):
     - CPU Usage:
@@ -117,12 +103,6 @@
             chart: false
 
 - Todo:
-    - Excalidraw:
-        href: http://192.168.178.200:8013
-        server: homelab-prod
-        container: excalidraw
-        icon: excalidraw
-        siteMonitor: http://192.168.178.200:8013
     - Healthchecks:
         href: http://192.168.178.200:8020
         server: homelab-prod
@@ -140,11 +120,4 @@
         container: paperlessngx-webserver-1
         siteMonitor: http://192.168.178.200:8010
         icon: paperless
-    - weatherapi:
-        label: Berlin # optional
-        latitude: 52.4536
-        longitude: 13.5113
-        units: metric # or imperial
-        apiKey: 94d6eac9ef904e219e581919240504
-        cache: 5 # Time in minutes to cache API responses, to stay within limits
 

@@ -1,0 +1,21 @@
+services:
+  photon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tonsnoei/photon-geocoder:latest
+    volumes:
+      - ./data:/photon/photon_data
+    ports:
+      - 2322:2322
+    networks:
+      - caddy_caddynet
+      - default
+
+volumes:
+  data:
+    driver: local
+
+networks:
+  caddy_caddynet:
+    external: true

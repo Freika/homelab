@@ -1,5 +1,3 @@
-version: "3"
-
 networks:
   caddy_caddynet:
     external: true

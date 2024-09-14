@@ -1,7 +1,7 @@
 # This script is responsible for Immich installation
 
 ---
-- hosts: homelab-prod
+- hosts: homelab-fuji
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
     - import_tasks: ../tasks/install_rclone.yml
@@ -28,7 +28,20 @@
         group: "{{ ansible_user }}"
         mode: 0644
 
-    - pip: name=docker-compose
+    - name: Install pipx
+      ansible.builtin.apt:
+        name: pipx
+        state: present
+
+    - name: Ensure pipx binary is accessible
+      ansible.builtin.shell: |
+        python3 -m pipx ensurepath
+
+    - name: Install docker-compose using pipx
+      ansible.builtin.shell: |
+        pipx install docker-compose
+      args:
+        creates: /usr/local/bin/docker-compose
 
     - name: Stop existing services
       command: docker compose -f {{ local_apps_path }}/immich/docker-compose.yml up -d

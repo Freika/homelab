@@ -1,7 +1,7 @@
 # This script is responsible for HomeAssistant installation
 
 ---
-- hosts: thinky01
+- hosts: homelab-prod
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 

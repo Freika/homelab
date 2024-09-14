@@ -1,4 +1,3 @@
-version: "3"
 services:
   healthchecks:
     image: healthchecks/healthchecks:latest

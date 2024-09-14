@@ -1,19 +1,16 @@
 ---
 
-- name: Rename host
-  import_playbook: rename_host.yml
+# - name: Rename host
+  # import_playbook: rename_host.yml
 
-- name: Install ZFS
-  import_playbook: install_zfs.yml
+# - name: Install ZFS
+#   import_playbook: install_zfs.yml
 
-- name: Upgrade APT packages
-  import_playbook: apt-upgrade.yml
+# - name: Install Docker
+#   import_playbook: install_docker.yml
 
-- name: Install Docker
-  import_playbook: install_docker.yml
-
-- name: Install Portainer
-  import_playbook: install_portainer.yml
+# - name: Install Portainer
+#   import_playbook: install_portainer.yml
 
 - name: Install Caddy
   import_playbook: install_caddy.yml
@@ -24,6 +21,6 @@
 - name: Install Immich
   import_playbook: install_immich.yml
 
-- name: Install Jellyfin
-  import_playbook: install_jellyfin.yml
+# - name: Install Jellyfin
+#   import_playbook: install_jellyfin.yml
 

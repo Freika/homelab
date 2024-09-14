@@ -81,3 +81,31 @@ n8n.chibi.rodeo {
 		dns cloudflare 123
 	}
 }
+
+actual.chibi.rodeo {
+	reverse_proxy 192.168.178.200:5006
+	tls {
+		dns cloudflare 123
+	}
+}
+
+vaultwarden.chibi.rodeo {
+	reverse_proxy 192.168.178.200:8088
+	tls {
+		dns cloudflare 123
+	}
+}
+
+photon.chibi.rodeo {
+	reverse_proxy 192.168.178.200:2322
+	tls {
+		dns cloudflare 123
+	}
+}
+
+authentik.chibi.rodeo {
+	reverse_proxy 192.168.178.200:9090
+	tls {
+		dns cloudflare 123
+	}
+}

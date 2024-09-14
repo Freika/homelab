@@ -1,7 +1,5 @@
 ---
-- hosts: outline-moscow
-  vars:
-    docker_compose_version: "2.23.3"
+- hosts: homelab-fuji
 
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml

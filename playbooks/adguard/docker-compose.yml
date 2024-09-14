@@ -1,6 +1,3 @@
----
-version: "3"
-
 networks:
   caddy_caddynet:
     external: true
@@ -16,7 +13,8 @@ services:
         # DNS
         - 53:53
         # WebUI
-        - 3000:3000/tcp
+        - 3222:3000/tcp
+        - 848:80/tcp
           # # DHCP server
         - 67:67/udp
           # - 68:68/tcp
