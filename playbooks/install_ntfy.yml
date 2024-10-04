@@ -1,0 +1,24 @@
+# This script is responsible for ntfy installation
+
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for ntfy
+      file:
+        path: "{{ local_apps_path }}/ntfy"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload ntfy docker-compose.yml
+      copy:
+        src: ./ntfy/docker-compose.yml
+        dest: "{{ local_apps_path }}/ntfy/docker-compose.yml"
+        mode: 0644
+
+    # First start of ntfy will fail because of existing config files
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/ntfy/docker-compose.yml up -d

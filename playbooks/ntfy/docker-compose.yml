@@ -1,0 +1,20 @@
+services:
+  ntfy:
+    image: binwiederhier/ntfy
+    container_name: ntfy
+    command:
+      - serve
+    environment:
+      - NTFY_BASE_URL=https://ntfy.chibi.rodeo
+      - NTFY_UPSTREAM_BASE_URL=https://ntfy.sh
+      - TZ=CEST   # optional: Change to your desired timezone
+    # user: UID:GID # optional: Set custom user/group or uid/gid
+    volumes:
+      - /var/cache/ntfy:/var/cache/ntfy
+      - /etc/ntfy:/etc/ntfy
+    ports:
+      - 65080:80
+    restart: unless-stopped
+networks:
+  caddy_caddynet:
+    external: true

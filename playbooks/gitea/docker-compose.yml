@@ -17,6 +17,7 @@ services:
       - GITEA__database__USER=gitea
       - GITEA__database__PASSWD=gitea
       - I_AM_BEING_UNSAFE_RUNNING_AS_ROOT=true
+      - ROOT_URL=https://gitea.chibi.rodeo
     restart: always
     networks:
       - gitea

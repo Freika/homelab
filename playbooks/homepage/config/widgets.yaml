@@ -3,8 +3,14 @@
 # https://gethomepage.dev/latest/configs/service-widgets
 
 - resources:
+    label: System
     cpu: true
     memory: true
-    disk: /
     cputemp: true
     uptime: true
+
+- resources:
+    label: Storage
+    expanded: true
+    disk:
+      - /storage-pool

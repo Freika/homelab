@@ -2,7 +2,7 @@
 # https://tonsnoei.nl/en/post/2023/03/20/set-up-your-own-geocoder-api/
 
 ---
-- hosts: homelab-prod
+- hosts: homelab-fuji
   tasks:
     - import_tasks: ../tasks/apt-upgrade.yml
 

@@ -6,7 +6,7 @@ gitea.chibi.rodeo {
 }
 
 immich.chibi.rodeo {
-	reverse_proxy immich_server:3001
+	reverse_proxy 10.0.0.202:2283
 	tls {
 		dns cloudflare 123
 	}
@@ -48,14 +48,14 @@ pihole.chibi.rodeo {
 }
 
 pve.chibi.rodeo {
-	reverse_proxy 192.168.178.201:8006
+	reverse_proxy 10.0.0.201:8006
 	tls {
 		dns cloudflare 123
 	}
 }
 
 docs.chibi.rodeo {
-	reverse_proxy 192.168.178.200:8010
+	reverse_proxy 10.0.0.200:8010
 	tls {
 		dns cloudflare 123
 	}
@@ -69,42 +69,71 @@ registry.chibi.rodeo {
 }
 
 dawarich.chibi.rodeo {
-	reverse_proxy 192.168.178.200:3000
+	reverse_proxy 10.0.0.200:3000
 	tls {
 		dns cloudflare 123
 	}
 }
 
 n8n.chibi.rodeo {
-	reverse_proxy 192.168.178.200:5678
+	reverse_proxy 10.0.0.200:5678
 	tls {
 		dns cloudflare 123
 	}
 }
 
 actual.chibi.rodeo {
-	reverse_proxy 192.168.178.200:5006
+	reverse_proxy 10.0.0.200:5006
 	tls {
 		dns cloudflare 123
 	}
 }
 
 vaultwarden.chibi.rodeo {
-	reverse_proxy 192.168.178.200:8088
+	reverse_proxy 10.0.0.200:8088
 	tls {
 		dns cloudflare 123
 	}
 }
 
 photon.chibi.rodeo {
-	reverse_proxy 192.168.178.200:2322
+	reverse_proxy 10.0.0.202:2322
 	tls {
 		dns cloudflare 123
 	}
 }
 
 authentik.chibi.rodeo {
-	reverse_proxy 192.168.178.200:9090
+	reverse_proxy 10.0.0.200:9090
+	tls {
+		dns cloudflare 123
+	}
+
+}
+
+ntfy.chibi.rodeo {
+	reverse_proxy 10.0.0.200:65080
+	tls {
+		dns cloudflare 123
+	}
+}
+
+flibusta.chibi.rodeo {
+	reverse_proxy 10.0.0.202:12380
+	tls {
+		dns cloudflare 123
+	}
+}
+
+home.chibi.rodeo {
+	reverse_proxy 10.0.0.200:3015
+	tls {
+		dns cloudflare 123
+	}
+}
+
+owncloud.chibi.rodeo {
+	reverse_proxy 10.0.0.202:65508
 	tls {
 		dns cloudflare 123
 	}

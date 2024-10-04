@@ -5,6 +5,10 @@
 homelab-prod:
   socket: /var/run/docker.sock
 
+homelab-fuji:
+  host:
+    - 192.168.178.202
+
 # nas:
 #   host: 192.168.178.200
 #   port: 2375

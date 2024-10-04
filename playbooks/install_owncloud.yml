@@ -1,0 +1,47 @@
+# This script is responsible for Owncloud installation
+---
+- hosts: homelab-fuji
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0775
+      loop:
+        - "{{ local_apps_path }}/owncloud"
+        - "{{ local_apps_path }}/owncloud/files"
+        - "{{ local_pool_path }}/tasks/owncloud/"
+        - "{{ local_backups_path }}/owncloud"
+
+    - name: Upload Owncloud compose.yml
+      copy:
+        src: ./owncloud/compose.yml
+        dest: "{{ local_apps_path }}/owncloud/compose.yml"
+        mode: 0644
+
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/owncloud/compose.yml up -d
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/owncloud/compose.yml up -d
+
+    # - name: Upload Owncloud backup script
+    #   template:
+    #     src: "./owncloud/backup.sh"
+    #     dest: "{{ local_pool_path }}/tasks/owncloud/backup.sh"
+    #     owner: "{{ ansible_user }}"
+    #     group: "{{ ansible_user }}"
+    #     mode: 0700
+
+    # - name: Schedule Owncloud DB backup to be done monthly
+    #   cron:
+    #     name: "Dump Owncloud DB to a local file"
+    #     minute: "45"
+    #     hour: "5"
+    #     day: "1"
+    #     job: "{{ local_pool_path }}/tasks/owncloud/backup.sh"
+    #     state: present

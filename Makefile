@@ -124,3 +124,9 @@ install_vaultwarden:
 
 install_photon:
 	ansible-playbook -k -K playbooks/install_photon.yml -i inventory.txt
+
+install_ntfy:
+	ansible-playbook -k -K playbooks/install_ntfy.yml -i inventory.txt
+
+install_owncloud:
+	ansible-playbook -k -K playbooks/install_owncloud.yml -i inventory.txt
