@@ -130,3 +130,6 @@ install_ntfy:
 
 install_owncloud:
 	ansible-playbook -k -K playbooks/install_owncloud.yml -i inventory.txt
+
+install_dawarich:
+	ansible-playbook -k -K playbooks/install_dawarich.yml -i inventory.txt

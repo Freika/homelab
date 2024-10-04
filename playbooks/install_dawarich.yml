@@ -1,0 +1,79 @@
+# This script is responsible for dawarich installation
+
+---
+- hosts: homelab-prod
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+    - import_tasks: ../tasks/install_rclone.yml
+
+    # - name: Create directory for dawarich
+    #   file:
+    #     path: "{{ local_apps_path }}/dawarich"
+    #     state: directory
+    #     owner: "{{ ansible_user }}"
+    #     group: "{{ ansible_user }}"
+    #     mode: 0755
+
+    # - name: Upload dawarich docker-compose.yml
+    #   copy:
+    #     src: ./dawarich/docker-compose.yml
+    #     dest: "{{ local_apps_path }}/dawarich/docker-compose.yml"
+    #     mode: 0644
+
+    # - name: Upload dawarich env vars
+    #   template:
+    #     src: ./dawarich/example.env
+    #     dest: "{{ local_apps_path }}/dawarich/.env"
+    #     owner: "{{ ansible_user }}"
+    #     group: "{{ ansible_user }}"
+    #     mode: 0644
+
+    # - name: Install pipx
+    #   ansible.builtin.apt:
+    #     name: pipx
+    #     state: present
+
+    # - name: Ensure pipx binary is accessible
+    #   ansible.builtin.shell: |
+    #     python3 -m pipx ensurepath
+
+    # - name: Install docker-compose using pipx
+    #   ansible.builtin.shell: |
+    #     pipx install docker-compose
+    #   args:
+    #     creates: /usr/local/bin/docker-compose
+
+    # - name: Stop existing services
+    #   command: docker compose -f {{ local_apps_path }}/dawarich/docker-compose.yml up -d
+
+    # - name: Create and start services
+    #   command: docker compose -f {{ local_apps_path }}/dawarich/docker-compose.yml up -d
+
+    - name: Create directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0775
+      loop:
+        - "{{ local_pool_path }}/tasks/dawarich/"
+        - "{{ local_backups_path }}/dawarich"
+
+
+    - name: Upload dawarich backup script
+      template:
+        src: "./dawarich/backup.sh"
+        dest: "{{ local_pool_path }}/tasks/dawarich/backup.sh"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0700
+
+    - name: Schedule dawarich DB backup to be done every 3 days
+      cron:
+        name: "Dump dawarich DB to a local file"
+        minute: "45"
+        hour: "5"
+        day: "*/3"
+        job: "{{ local_pool_path }}/tasks/dawarich/backup.sh"
+        state: present
