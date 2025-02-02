@@ -27,5 +27,8 @@
         dest: "{{ local_apps_path }}/uptime-kuma/docker-compose.yml"
         mode: 0644
 
-    - name: Create and start services
+    - name: Stop existing service
+      command: docker compose -f {{ local_apps_path }}/uptime-kuma/docker-compose.yml down
+
+    - name: Start service
       command: docker compose -f {{ local_apps_path }}/uptime-kuma/docker-compose.yml up -d

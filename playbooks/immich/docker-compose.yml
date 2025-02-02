@@ -14,11 +14,12 @@ services:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
+      - /storage-pool/apps/immich/app/external-libraries/um_mka:/mnt/media/um_mka:ro
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
     ports:
-      - 2283:3001
+      - 2284:2283
     depends_on:
       - redis
       - database

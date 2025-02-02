@@ -1,0 +1,36 @@
+# This script is responsible for Influxdb-Grafana-Prometheus installation
+
+---
+- hosts: homelab-rocky
+  tasks:
+    - import_tasks: ../tasks/apt-upgrade.yml
+
+    - name: Create directory for Monitoring stack
+      file:
+        path: "{{ local_apps_path }}/monitoring"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+
+    - name: Upload Monitoring stack docker-compose.yml
+      template:
+        src: "monitoring/docker-compose.yml"
+        dest: "{{ local_apps_path }}/monitoring/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Upload Prometheus configuration
+      template:
+        src: "monitoring/prometheus.yml"
+        dest: "{{ local_apps_path }}/monitoring/prometheus.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0600
+
+    - name: Stop existing services
+      command: docker compose -f {{ local_apps_path }}/monitoring/docker-compose.yml down
+
+    - name: Create and start services
+      command: docker compose -f {{ local_apps_path }}/monitoring/docker-compose.yml up -d

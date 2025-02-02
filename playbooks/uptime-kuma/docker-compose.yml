@@ -1,8 +1,3 @@
-# Simple docker-compose.yml
-# You can change your port or volume location
-
-version: '3.3'
-
 networks:
   caddy_caddynet:
     external: true
@@ -14,7 +9,7 @@ services:
     volumes:
       - ./data:/app/data
     ports:
-      - 3101:3001  # <Host Port>:<Container Port>
+      - 3101:3001
     restart: always
     networks:
       - caddy_caddynet

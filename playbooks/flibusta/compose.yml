@@ -1,0 +1,13 @@
+services:
+    server:
+        container_name: inpx-web
+        network_mode: bridge
+        ports:
+            - 12380:12380
+        volumes:
+            # путь к папке с рабочими файлами и базой
+            - /storage-pool/apps/flibusta/data:/data
+            # путь к библиотеке с zip архивами и inpx файлом
+            - /storage-pool/backups/fb2.Flibusta.Net:/library:ro
+        restart: unless-stopped
+        image: rshmyrev/inpx-web

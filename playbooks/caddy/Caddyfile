@@ -6,7 +6,7 @@ gitea.chibi.rodeo {
 }
 
 immich.chibi.rodeo {
-	reverse_proxy 10.0.0.202:2283
+	reverse_proxy 10.0.0.227:2284
 	tls {
 		dns cloudflare 123
 	}
@@ -97,7 +97,7 @@ vaultwarden.chibi.rodeo {
 }
 
 photon.chibi.rodeo {
-	reverse_proxy 10.0.0.202:2322
+	reverse_proxy 10.0.0.227:2322
 	tls {
 		dns cloudflare 123
 	}
@@ -119,7 +119,7 @@ ntfy.chibi.rodeo {
 }
 
 flibusta.chibi.rodeo {
-	reverse_proxy 10.0.0.202:12380
+	reverse_proxy 10.0.0.227:12380
 	tls {
 		dns cloudflare 123
 	}
@@ -133,8 +133,34 @@ home.chibi.rodeo {
 }
 
 owncloud.chibi.rodeo {
-	reverse_proxy 10.0.0.202:65508
+	reverse_proxy 10.0.0.227:65508
 	tls {
 		dns cloudflare 123
 	}
 }
+
+photon.dawarich.app {
+	@validHeader {
+		header X-Api-Key 100500
+	}
+
+	handle @validHeader {
+		reverse_proxy photon:2322
+	}
+
+	handle {
+		respond "Unauthorized" 401
+	}
+
+	tls {
+		dns cloudflare 111
+	}
+}
+
+monitoring.chibi.rodeo {
+	reverse_proxy 10.0.0.227:3333
+	tls {
+		dns cloudflare 123
+	}
+}
+

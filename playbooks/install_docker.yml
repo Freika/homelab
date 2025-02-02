@@ -1,71 +1,71 @@
 ---
-- hosts: homelab-fuji
+- hosts: homelab-rocky
   become: yes
   vars:
     docker_compose_version: "2.29.2"
   tasks:
 
-    # Step 1: Update apt package index
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: yes
+    # # Step 1: Update apt package index
+    # - name: Update apt cache
+    #   ansible.builtin.apt:
+    #     update_cache: yes
 
-    # Step 2: Install required packages (ca-certificates, curl, gnupg, lsb-release)
-    - name: Install required dependencies
-      ansible.builtin.apt:
-        name:
-          - ca-certificates
-          - curl
-          - gnupg
-          - lsb-release
-        state: present
+    # # Step 2: Install required packages (ca-certificates, curl, gnupg, lsb-release)
+    # - name: Install required dependencies
+    #   ansible.builtin.apt:
+    #     name:
+    #       - ca-certificates
+    #       - curl
+    #       - gnupg
+    #       - lsb-release
+    #     state: present
 
-    # Step 3: Create directory for apt keyrings
-    - name: Create directory for Docker apt keyring
-      ansible.builtin.file:
-        path: /etc/apt/keyrings
-        state: directory
-        mode: '0755'
+    # # Step 3: Create directory for apt keyrings
+    # - name: Create directory for Docker apt keyring
+    #   ansible.builtin.file:
+    #     path: /etc/apt/keyrings
+    #     state: directory
+    #     mode: '0755'
 
-    # Step 4: Add Docker’s official GPG key
-    - name: Download Docker GPG key using curl
-      ansible.builtin.shell: |
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-      args:
-        creates: /etc/apt/keyrings/docker.asc
+    # # Step 4: Add Docker’s official GPG key
+    # - name: Download Docker GPG key using curl
+    #   ansible.builtin.shell: |
+    #     curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    #   args:
+    #     creates: /etc/apt/keyrings/docker.asc
 
-    # Step 5: Set permissions on Docker GPG key
-    - name: Set permissions for Docker GPG key
-      ansible.builtin.file:
-        path: /etc/apt/keyrings/docker.asc
-        mode: '0644'
+    # # Step 5: Set permissions on Docker GPG key
+    # - name: Set permissions for Docker GPG key
+    #   ansible.builtin.file:
+    #     path: /etc/apt/keyrings/docker.asc
+    #     mode: '0644'
 
-    # Step 6: Add Docker repository to apt sources
-    - name: Add Docker APT repository
-      ansible.builtin.apt_repository:
-        repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-        state: present
+    # # Step 6: Add Docker repository to apt sources
+    # - name: Add Docker APT repository
+    #   ansible.builtin.apt_repository:
+    #     repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    #     state: present
 
-    # Step 7: Update apt package index again after adding Docker repo
-    - name: Update apt cache again after adding Docker repository
-      ansible.builtin.apt:
-        update_cache: yes
+    # # Step 7: Update apt package index again after adding Docker repo
+    # - name: Update apt cache again after adding Docker repository
+    #   ansible.builtin.apt:
+    #     update_cache: yes
 
-    # Step 8: Install Docker Engine
-    - name: Install Docker Engine
-      ansible.builtin.apt:
-        name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-        state: present
+    # # Step 8: Install Docker Engine
+    # - name: Install Docker Engine
+    #   ansible.builtin.apt:
+    #     name:
+    #       - docker-ce
+    #       - docker-ce-cli
+    #       - containerd.io
+    #     state: present
 
-    # Step 9: Ensure Docker service is enabled and running
-    - name: Ensure Docker is enabled and running
-      ansible.builtin.systemd:
-        name: docker
-        enabled: yes
-        state: started
+    # # Step 9: Ensure Docker service is enabled and running
+    # - name: Ensure Docker is enabled and running
+    #   ansible.builtin.systemd:
+    #     name: docker
+    #     enabled: yes
+    #     state: started
 
     # Step 10: Download and install Docker Compose
     - name: Download Docker Compose

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    user: "0"
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3333:3000

@@ -71,8 +71,8 @@ install_nginx:
 install_nextcloud:
 	ansible-playbook -k -K playbooks/install_nextcloud.yml -i inventory.txt
 
-install_igp:
-	ansible-playbook -k -K playbooks/install_igp.yml -i inventory.txt
+install_monitoring:
+	ansible-playbook -k -K playbooks/install_monitoring.yml -i inventory.txt
 
 install_glances:
 	ansible-playbook -k -K playbooks/install_glances.yml -i inventory.txt
@@ -133,3 +133,6 @@ install_owncloud:
 
 install_dawarich:
 	ansible-playbook -k -K playbooks/install_dawarich.yml -i inventory.txt
+
+install_zfs:
+	ansible-playbook -k -K playbooks/install_zfs.yml -i inventory.txt
