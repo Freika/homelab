@@ -75,13 +75,6 @@ dawarich.chibi.rodeo {
 	}
 }
 
-n8n.chibi.rodeo {
-	reverse_proxy 10.0.0.200:5678
-	tls {
-		dns cloudflare 123
-	}
-}
-
 actual.chibi.rodeo {
 	reverse_proxy 10.0.0.200:5006
 	tls {
@@ -139,24 +132,6 @@ owncloud.chibi.rodeo {
 	}
 }
 
-photon.dawarich.app {
-	@validHeader {
-		header X-Api-Key 100500
-	}
-
-	handle @validHeader {
-		reverse_proxy photon:2322
-	}
-
-	handle {
-		respond "Unauthorized" 401
-	}
-
-	tls {
-		dns cloudflare 111
-	}
-}
-
 monitoring.chibi.rodeo {
 	reverse_proxy 10.0.0.227:3333
 	tls {
@@ -164,3 +139,23 @@ monitoring.chibi.rodeo {
 	}
 }
 
+n8n.chibi.rodeo {
+	reverse_proxy 10.0.0.200:5678
+	tls {
+		dns cloudflare 123
+	}
+}
+
+taxes.chibi.rodeo {
+	reverse_proxy 10.0.0.200:7331
+	tls {
+		dns cloudflare 123
+	}
+}
+
+bigcapital.chibi.rodeo {
+	reverse_proxy 10.0.0.200:3921
+	tls {
+		dns cloudflare 123
+	}
+}
